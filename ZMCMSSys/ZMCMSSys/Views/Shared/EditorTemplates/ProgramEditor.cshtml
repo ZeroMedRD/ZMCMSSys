@@ -1,0 +1,13 @@
+﻿@using System.Collections
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownListFor(m => m)
+        .Name("SPRowid")
+        .DataValueField("SPRowid")
+        .DataTextField("SPName")
+        .SelectedIndex(0)
+        .DataSource(ds => ds
+            .Read(read => read.Action("GetProgram", "ZMSystem"))
+        )
+        .Filter("contains")
+ )

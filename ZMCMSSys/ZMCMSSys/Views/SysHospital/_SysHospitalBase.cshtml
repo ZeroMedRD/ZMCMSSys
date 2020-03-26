@@ -1,0 +1,171 @@
+﻿@model ZMCMSSys.ViewModels.ViewModel_Hospitals
+
+<link href="~/Content/Editor.css" rel="stylesheet" />
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="HeadOneWidth">
+                <i class="fas fa-laptop-code">醫事機構代碼</i>
+            </div>
+            <div class="BodyOneWidth">
+                @Html.TextBoxFor(model => model.HospID, new { @class = "InputOneBox", @style = "width:50%;" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="HeadOneWidth">
+                <i class="fas fa-hospital-alt"> 醫事機構名稱</i>
+            </div>
+            <div class="BodyOneWidth">
+                @Html.TextBoxFor(model => model.HospName, new { @class = "InputOneBox" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="inputOneHead HeadOneWidth">
+                <i class="fas fa-hospital-symbol"> 醫院地址</i>
+            </div>
+            <div class="inputOneBody BodyOneWidth">
+                @Html.TextBoxFor(model => model.HospAddress, new { @class = "InputOneBox" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="inputOneHead HeadOneWidth">
+                <i class="fas fa-users"> 醫院負責人</i>
+            </div>
+            <div class="inputOneBody BodyOneWidth">
+                @(Html.Kendo().DropDownListFor(model => model.HospPrincipal)
+                            .Name("HospPrincipal")
+                            .DataTextField("UserName")
+                            .DataValueField("UserRowid")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetBelongCompanyUserData", "ZMCMSSysGetData");
+                                });
+                            }).ValuePrimitive(true)
+                            .Filter("contains").HtmlAttributes(new { style = "width:25%;" }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="HeadOneWidth">
+                <i class="fas fa-user-md"> 醫院院長</i>
+            </div>
+            <div class="BodyOneWidth">
+                @(Html.Kendo().DropDownListFor(model => model.HospDean)
+                            .Name("HospDean")
+                            .DataTextField("UserName")
+                            .DataValueField("UserRowid")
+                            .DataSource(source =>
+                            {
+                                source.Read(read =>
+                                {
+                                    read.Action("GetBelongCompanyUserData", "ZMCMSSysGetData");
+                                });
+                            }).ValuePrimitive(true)
+                            .Filter("contains").HtmlAttributes(new { style = "width:25%;" }))
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="HeadOneWidth">
+                <i class="fas fa-mail-bulk"> 地區代碼</i>
+            </div>
+            <div class="BodyOneWidth">
+                @Html.TextBoxFor(model => model.HospAreaCode, new { @class = "InputOneBox", @style = "width:32%;" })
+            </div>
+        </div>        
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-6 no-padding">
+            <div class="HeadTwoWidth">
+                <i class="fas fa-phone-square"> 醫院電話</i>
+            </div>
+            <div class="BodyTwoWidth">
+                @Html.TextBoxFor(model => model.HospPhone, new { @class = "InputTwoBox" })
+            </div>
+        </div>
+        <div class="col-md-6 no-padding">
+            <div class="HeadTwoWidth">
+                <i class="fas fa-fax"> 傳真號碼</i>
+            </div>
+            <div class="BodyTwoWidth">
+                @Html.TextBoxFor(model => model.HospFaxno, new { @class = "InputTwoBox" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="HeadOneWidth">
+                <i class="fas fa-envelope"> 電子信箱</i>
+            </div>
+            <div class="BodyOneWidth">
+                @Html.TextBoxFor(model => model.HospEmail, new { @class = "InputOneBox" })
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-6 no-padding">
+            <div class="HeadTwoWidth">
+                <i class="fas fa-window-restore"> 醫事機構類別</i>
+            </div>
+            <div class="BodyTwoWidth">
+                @(Html.Kendo().DropDownListFor(model => model.HospLevel)
+                                    .Name("HospLevel")
+                                           .DataTextField("CBDDescription")
+                                           .DataValueField("CBDCode")
+                                           .DataSource(source =>
+                                           {
+                                               source.Read(read =>
+                                               {
+                                                   read.Action("GetCombos", "ZMCMSSysGetData", new { stext = "HOSPLEVEL" });
+                                               });
+                                           }).ValuePrimitive(true)
+                                           .Filter("contains")
+                                           .HtmlAttributes(new { @class = "InputTwoBox" })
+                                           .Events(e => e.DataBound("HospLevelDefault")))
+            </div>
+        </div>
+        <div class="col-md-6 no-padding">
+            <div class="HeadTwoWidth">
+                <i class="fas fa-user-check"> 系統啟用</i>
+            </div>
+            <div class="BodyTwoWidth">
+                @Html.CheckBoxFor(model => model.HospActive, new { @class = "InputTwoBox large-checkbox" })
+            </div>
+        </div>
+    </div>
+</div>

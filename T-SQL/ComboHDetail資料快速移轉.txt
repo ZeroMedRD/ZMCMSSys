@@ -1,0 +1,21 @@
+// 先找到該醫事機構的 CBMRowid 
+select sh.HospRowid,sh.HospID,sh.HospName,chm.* from SysHospital sh 
+join ComboHMaster chm on sh.HospRowid=chm.CBMHospRowid
+where chm.CBMRowid is not null and chm.CBMClass='UVMEMO'
+
+// 從某個樣版的資料移轉到新的醫事機構資料內
+insert into ComboHDetail 
+	select NEWID() as CBDCode,
+       '3113ef2e-4a29-48cd-8cc5-b9a4f2ca97b2' as CBMRowid,
+	   chd.CBDCode,
+	   chd.CBDDescription,
+	   chd.CBDDisplayFlag,
+	   chd.CBDDisplayOrder,
+	   chd.CBDLastModifiedDateTime,
+	   chd.CBDModifiedUserRowid
+	from (
+			select sh.HospRowid,sh.HospID,sh.HospName,chm.* from SysHospital sh 
+				   join ComboHMaster chm on sh.HospRowid=chm.CBMHospRowid
+			where chm.CBMRowid is not null and chm.CBMClass='UVMEMO') as cbm
+	join ComboHDetail chd on cbm.CBMRowid=chd.CBMRowid
+	where cbm.HospID='3532040438' order by chd.CBDCode

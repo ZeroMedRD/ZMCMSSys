@@ -1,0 +1,143 @@
+﻿@{
+    ViewBag.Title = "醫事機構系統參數設定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    @using (Html.BeginForm("SysComboH", "ZMSystem", FormMethod.Post))
+    {
+        <div class="box box-success">
+            <div class="box-header with-border">
+                <h3 class="box-title">醫事機構系統參數設定</h3>
+            </div>
+            <div class="box-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-addon no-modify-color">醫事機構</span>
+                            @(Html.Kendo().DropDownList()
+                                .Name("HospRowid")
+                                .DataTextField("HospName")
+                                .DataValueField("HospRowid")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetHospital_MedialGroup", "ZMCMSSysGetData", new { param = Session["UserRowid"].ToString() });
+                                    });
+                                })
+                                .Enable(true)
+                                .HtmlAttributes(new { @class = "form-control pull-left" })
+                            )
+                        </div>
+                    </div>
+                    <div class="col-md-2 pull-left">
+                        <button type="submit" class="btn bg-olive"> 確認 </button>
+                    </div>
+                </div>
+            </div>
+
+            @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_ComboHMaster>()
+                .Name("grid_ComboHMaster")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.CBMClass);
+                    columns.Bound(c => c.CBMDescription);
+                    columns.Bound(c => c.CBMRemark);
+                    columns.Command(command =>
+                    {
+                        command.Edit().Text("修改");
+                        command.Destroy().Text("刪除");
+                    }).Width(180);
+                })
+                .ToolBar(toolbar =>
+                {
+                    toolbar.Create().Text("新增資料");
+                    toolbar.Excel().Text("輸出到 Excel");
+                })
+                .Pageable().Sortable().Filterable()
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Model(model => model.Id(p => p.CBMRowid))
+                    .Read(read => read.Action("ComboHMaster_Read", "ZMSystem", new { param = ViewBag.HospRowid }))
+                    .Create(create => create.Action("ComboHMaster_Create", "ZMSystem", new { param = ViewBag.HospRowid }))
+                    .Update(update => update.Action("ComboHMaster_Update", "ZMSystem", new { param = ViewBag.HospRowid }))
+                    .Destroy(destroy => destroy.Action("ComboHMaster_Destroy", "ZMSystem"))
+                )
+                .Events(events => events.DataBound("dataBound"))
+                .ClientDetailTemplateId("ComboHDetailTemplate")
+            )
+
+            <script id="ComboHDetailTemplate" type="text/kendo-tmpl">
+                @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_ComboHDetail>()
+                    .Name("#=CBMRowid#")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.CBDCode).Title("選單值");
+                        columns.Bound(o => o.CBDDescription).Title("選單顯示");
+                        columns.Bound(o => o.CBDDisplayFlag).Title("選單項是否顯示");
+                        columns.Bound(o => o.CBDDisplayOrder).Title("選單顯示順序");
+                        columns.Command(command =>
+                        {
+                            command.Edit().Text("修改");
+                            command.Destroy().Text("刪除");
+                        }).Width(180);
+                    })
+                    .ToolBar(tools => tools.Create().Text("加入選單項目"))
+                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                    .Pageable(page => page.Refresh(true))
+                    .DataSource(dataSource => dataSource.Ajax()
+                        .Sort(sort => sort.Add("CBDDisplayOrder").Ascending())
+                        .Model(model =>
+                        {
+                            model.Id(o => o.CBDRowid);
+                        })
+                        .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                        .Read(read => read.Action("ComboHDetail_Read", "ZMSystem", new { CBMRowid = "#=CBMRowid#" }))
+                        .Update(update => update.Action("ComboHDetail_Update", "ZMSystem", new { CBMRowid = "#=CBMRowid#" }))
+                        .Create(create => create.Action("ComboHDetail_Create", "ZMSystem", new { CBMRowid = "#=CBMRowid#" }))
+                        .Destroy(destroy => destroy.Action("ComboHDetail_Destroy", "ZMSystem"))
+                        .PageSize(10))
+                    .Pageable()
+                    .Sortable()
+                    .ToClientTemplate()
+                )
+            </script>
+        </div>
+    }
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <script>
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+</body>
+</html>
+

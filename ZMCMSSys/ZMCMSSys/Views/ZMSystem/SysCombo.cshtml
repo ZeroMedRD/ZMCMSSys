@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "系統參數設定";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    <h2>系統參數設定</h2>
+    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_ComboMasters>()
+        .Name("grid_ComboMaster")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.CBMClass);
+            columns.Bound(c => c.CBMDescription);
+            columns.Bound(c => c.CBMRemark);
+            columns.Command(command =>
+            {
+                command.Edit().Text("修改");
+                command.Destroy().Text("刪除");
+            }).Width(180);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create().Text("新增資料");
+            toolbar.Excel().Text("輸出到 Excel");
+        })
+        .Pageable().Sortable().Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Model(model => model.Id(p => p.CBMRowid))
+            .Read(read => read.Action("ComboMaster_Read", "ZMSystem"))
+            .Create(create => create.Action("ComboMaster_Create", "ZMSystem"))
+            .Update(update => update.Action("ComboMaster_Update", "ZMSystem"))
+            .Destroy(destroy => destroy.Action("ComboMaster_Destroy", "ZMSystem")))
+        .Events(events => events.DataBound("dataBound"))
+        .ClientDetailTemplateId("ComboDetailTemplate")
+    )
+
+    <script id="ComboDetailTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_ComboDetails>()
+            .Name("#=CBMRowid#")
+            .Columns(columns =>
+            {
+                columns.Bound(o => o.CBDCode).Title("選單值");
+                columns.Bound(o => o.CBDDescription).Title("選單顯示");
+                columns.Bound(o => o.CBDDisplayFlag).Title("選單項是否顯示");
+                columns.Bound(o => o.CBDDisplayOrder).Title("選單顯示順序");
+                columns.Command(command =>
+                {
+                    command.Edit().Text("修改");
+                    command.Destroy().Text("刪除");
+                }).Width(180);
+            })
+            .ToolBar(tools => tools.Create().Text("加入選單項目"))
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable(page => page.Refresh(true))
+            .DataSource(dataSource => dataSource.Ajax()
+                .Sort(sort => sort.Add("CBDDisplayOrder").Ascending())
+                .Model(model =>
+                {
+                    model.Id(o => o.CBDRowid);
+                })
+                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                .Read(read => read.Action("ComboDetail_Read", "ZMSystem", new { CBMRowid = "#=CBMRowid#" }))
+                .Update(update => update.Action("ComboDetail_Update", "ZMSystem", new { CBMRowid = "#=CBMRowid#" }))
+                .Create(create => create.Action("ComboDetail_Create", "ZMSystem", new { CBMRowid = "#=CBMRowid#" }))
+                .Destroy(destroy => destroy.Action("ComboDetail_Destroy", "ZMSystem"))
+                .PageSize(10))
+            .Pageable().Sortable()
+            .ToClientTemplate()
+        )
+    </script>
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <script>
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+</body>
+</html>
+

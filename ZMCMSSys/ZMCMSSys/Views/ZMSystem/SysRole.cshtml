@@ -1,0 +1,107 @@
+﻿@{
+    ViewBag.Title = "系統角色管理維護";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    <h2>系統角色管理維護</h2>
+    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_Roles>()
+        .Name("grid_SysRole")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.SRName);
+            columns.Bound(c => c.SRDisplayName);
+            columns.Bound(c => c.SRDescript);
+            columns.Bound(c => c.SRUrl);
+            columns.Bound(c => c.SRFont);
+            columns.Command(command =>
+            {
+                command.Edit().Text("修改");
+                command.Destroy().Text("刪除");
+            }).Width(180);
+        })
+        .ToolBar(toolbar =>
+        {
+            toolbar.Create().Text("新增資料");
+            toolbar.Excel().Text("輸出到 Excel");
+        })
+        .Pageable().Sortable().Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Model(model => model.Id(p => p.SRRowid))
+            .Read(read => read.Action("SysRole_Read", "ZMSystem"))
+            .Create(create => create.Action("SysRole_Create", "ZMSystem"))
+            .Update(update => update.Action("SysRole_Update", "ZMSystem"))
+            .Destroy(destroy => destroy.Action("SysRole_Destroy", "ZMSystem")))
+        .Events(events => events.DataBound("dataBound"))
+        .ClientDetailTemplateId("RoleProgramTemplate")
+    )
+
+    <script id="RoleProgramTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_RolePrograms>()
+            .Name("#=SRRowid#")
+            .Columns(columns =>
+            {
+                columns.Bound(o => o.SPName).EditorTemplateName("ProgramEditor").Title("應用程式名稱");
+                columns.Bound(o => o.SRPActive).Title("選單焦點").Width(100);
+                columns.Bound(o => o.SRPDisplaySeq).Title("選單顯示順序").Width(50);
+                columns.Command(command =>
+                {
+                    command.Edit().Text("修改");
+                    command.Destroy().Text("刪除");
+                }).Width(180);
+            })
+            .ToolBar(tools => tools.Create().Text("加入連結應用程式"))
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable(page => page.Refresh(true))
+            .DataSource(dataSource => dataSource.Ajax()
+                .Sort(sort => sort.Add("SRPDisplaySeq").Ascending())
+                .Model(model =>
+                {
+                    model.Id(o => o.SRPRowid);
+                })
+                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                .Read(read => read.Action("SysRoleProgram_Read", "ZMSystem", new { SRRowid = "#=SRRowid#" }))
+                .Update(update => update.Action("SysRoleProgram_Update", "ZMSystem", new { SRRowid = "#=SRRowid#" }))
+                .Create(create => create.Action("SysRoleProgram_Create", "ZMSystem", new { SRRowid = "#=SRRowid#" }))
+                .Destroy(destroy => destroy.Action("SysRoleProgram_Destroy", "ZMSystem"))
+                .PageSize(10))
+            .Pageable().Sortable()
+            .ToClientTemplate()
+        )
+    </script>
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <script>
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+</body>
+</html>

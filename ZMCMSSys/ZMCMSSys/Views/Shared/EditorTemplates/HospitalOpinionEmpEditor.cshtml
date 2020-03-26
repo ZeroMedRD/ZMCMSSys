@@ -1,0 +1,38 @@
+﻿@*@using System.Collections
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownList()
+            .Name("UserRowid")
+            .DataValueField("UserRowid")
+            .DataTextField("UserName")
+            .FooterTemplate("總計 <strong>#: instance.dataSource.total() #</strong> 筆資料")
+            .Template("<span class=\"k-state-default\">#: data.UserNo #   #: data.UserName #</span>")
+            .SelectedIndex(0)
+            .DataSource(ds => ds
+                .Read(read => read.Action("GetAspNetUsers", "ZMCMSGetData"))
+            )
+            .Filter("contains")
+)*@
+
+
+@using System.Collections
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownList()
+        .Name("OREUserRowid")
+        .DataValueField("UserRowid")
+        .DataTextField("UserName")
+        .SelectedIndex(0)
+        .DataSource(ds => ds
+            .Read(read => read.Action("GetAspNetUsers", "ZMCMSSysGetData"))
+        )
+        .Filter("contains")
+//.HeaderTemplate("<div class=\"dropdown-header k-widget k-header\">" +
+//                                        "<span>     </span>" +
+//                                        "<span>姓名</span>" +
+//                                        "<span style='padding-left:30px;'>E-Mail</span>" +
+//                                    "</div>")
+//.Template("<span class=\"k-state-default\" style=\"background-image: url(" + Url.Content("/Assets/Images/Users/") + "#:data.UserPhoto#" + ");\" ></span>" +
+//                              "<span class=\"k-state-default\"><h3>#:data.UserName#</span><span style='padding-left:30px;'>#:data.UserEmail#</h3></span>")
+//.ValueTemplate("<span class=\"selected-value\" style=\"background-image: url(" + Url.Content("/Assets/Images/Users/") + "#:data.UserPhoto#" + ");\" ></span>" + "<span>#:data.UserName# </span>")
+)

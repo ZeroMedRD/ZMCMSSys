@@ -1,0 +1,208 @@
+﻿@model ZMCMSSys.ViewModels.ViewModel_InfoPanel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script>
+        function CBDRowidDefault(e) {
+            var dropdownlist = $("#CBDRowid").data("kendoDropDownList");
+            dropdownlist.select(0);
+            this.trigger('change');
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <style type="text/css">
+        textarea {
+            resize: none;
+        }
+    </style>
+
+    <link href="~/Content/Editor.css?20200109" rel="stylesheet" />
+</head>
+<body>
+    @Html.HiddenFor(model => model.IPRowid)
+    @Html.HiddenFor(model => model.IPHospRowid)
+
+    <div class="form-group-sm form-group-padding">
+        <div class="row row-padding">
+            <div class="col-md-12 no-padding">
+                <div class="HeadOneWidth">
+                    <i class="fas fa-hospital-alt"> 資訊面板名稱</i>
+                </div>
+                <div class="BodyOneWidth">
+                    @Html.TextBoxFor(model => model.IPName, new { @class = "InputOneBox" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group-sm form-group-padding">
+        <div class="row row-padding">
+            <div class="col-md-12 no-padding">
+                <div class="HeadOneWidth">
+                    <i class="fas fa-hospital-symbol"> 顯示順序</i>
+                </div>
+                <div class="BodyOneWidth">
+                    @Html.TextBoxFor(model => model.IPDisplaySeq, new { @class = "InputOneBox", @style = "width:30%;" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group-sm form-group-padding">
+        <div class="row row-padding">
+            <div class="col-md-12 no-padding">
+                <div class="HeadOneWidth">
+                    <i class="fas fa-users"> 類別</i>
+                </div>
+                <div class="BodyOneWidth">
+                    @(Html.Kendo().DropDownListFor(model => model.IPCBDCode)
+                                .DataTextField("CBDDescription")
+                                .DataValueField("CBDCode")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetCombos", "ZMCMSSysGetData", new { stext = "OPDCLASS" });
+                                    });
+                                }).ValuePrimitive(true)
+                                .Filter("contains").HtmlAttributes(new { style = "width:50%;" }))
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group-sm form-group-padding">
+        <div class="row row-padding">
+            <div class="col-md-12 no-padding">
+                <div class="HeadOneWidth">
+                    <i class="fas fa-users"> obid</i>
+                </div>
+                <div class="BodyOneWidth">
+                    @Html.TextAreaFor(model => model.IPCipher, new { style = "width:90%; height:150px", @readonly = true })
+                    @*@(Html.Kendo().DropDownListFor(model => model.IPCBDCode)
+                                .DataTextField("CBDDescription")
+                                .DataValueField("CBDCode")
+                                .DataSource(source =>
+                                {
+                                    source.Read(read =>
+                                    {
+                                        read.Action("GetCombos", "ZMCMSSysGetData", new { stext = "OPDCLASS" });
+                                    });
+                                }).ValuePrimitive(true)
+                                .Filter("contains").HtmlAttributes(new { style = "width:50%;" }))*@
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*<div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 登入帳號(1)</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGLoginUser1, new { @class = "InputOneBox", @style = "width:50%;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 登入帳號(2)</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGLoginUser2, new { @class = "InputOneBox", @style = "width:50%;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 登入帳號(3)</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGLoginUser3, new { @class = "InputOneBox", @style = "width:50%;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 登入密碼</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGLoginPassword, new { @class = "InputOneBox", @style = "width:50%;" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 資料取得位置</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGGetDataPath, new { @class = "InputOneBox" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 紀錄存放位置</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGSaveLogPath, new { @class = "InputOneBox" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group-sm form-group-padding">
+            <div class="row row-padding">
+                <div class="col-md-12 no-padding">
+                    <div class="HeadOneWidth">
+                        <i class="fas fa-hospital-symbol"> 連結位置</i>
+                    </div>
+                    <div class="BodyOneWidth">
+                        @Html.TextBoxFor(model => model.HGUrl, new { @class = "InputOneBox" })
+                    </div>
+                </div>
+            </div>
+        </div>*@
+</body>
+</html>

@@ -1,0 +1,344 @@
+﻿@{
+    ViewBag.Title = "醫事機構部門及診間管理";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+
+    <style>
+        .k-edit-form-container {
+            width: 99%;
+        }
+
+        .k-dropdown .k-dropdown-wrap {
+            /*width: 100% !important;*/
+            height: 30px !important;
+            border: 1px solid #ccc !important;
+        }
+
+        .k-list-container {
+            width: 36% !important;
+            border: 1px solid #ccc !important;
+        }
+
+        .k-state-selected {
+            color: red !important;
+            /*background-color: darkgrey !important;*/
+        }
+
+        .k-window-content {
+            overflow: hidden !important;
+        }
+
+        .k-i-search {
+            font-size: 20px;
+        }
+
+        #search {
+            margin: 10px;
+        }
+
+        .hospid-css {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            padding: 5px 0px 5px 0px;
+            border: 1px solid rgba(180,180,180,1);
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            font: normal 16px/1 "Times New Roman", Times, serif;
+            color: rgba(255,255,255,1);
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            background: #5892a0;
+            -webkit-box-shadow: 4px 4px 6px 1px rgba(0,0,0,0.4);
+            box-shadow: 4px 4px 6px 1px rgba(0,0,0,0.4);
+            /*display: inline;
+            float: left;*/
+            /*padding-right:5px;*/
+        }
+
+        .hospname-css {
+            -webkit-box-sizing: content-box;
+            -moz-box-sizing: content-box;
+            box-sizing: content-box;
+            padding: 5px;
+            border: 1px solid rgba(180,180,180,1);
+            -webkit-border-radius: 5px;
+            border-radius: 5px;
+            font: normal 16px/1 "Times New Roman", Times, serif;
+            /*color: rgba(255,255,255,1);*/
+            -o-text-overflow: ellipsis;
+            text-overflow: ellipsis;
+            background: #edf1f2;
+            -webkit-box-shadow: 4px 4px 6px 1px rgba(0,0,0,0.4);
+            box-shadow: 4px 4px 6px 1px rgba(0,0,0,0.4);
+            /*float: left;*/
+        }
+
+        .k-listbox .k-list-scroller {
+            overflow-x: hidden;
+        }
+    </style>
+
+    <script>
+        var wnd;
+        $(document).ready(function () {
+            wnd = $("#modalWindow").kendoWindow({
+                title: "刪除資料確認",
+                modal: true,
+                visible: false,
+                resizable: false,
+                width: 300
+            }).data("kendoWindow");
+        });
+    </script>
+</head>
+<body>
+    <h2>醫事機構部門資料維護</h2>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3 no-padding">
+                <div class="k-widget k-header">
+                    <input id="search" autocomplete="off" style="width:75%;" class="k-textbox" />
+                    <span class="k-icon k-i-search"></span>
+                </div>
+                @(Html.Kendo().ListBox()
+                            .Name("lb")
+                            .DataTextField("HospName")
+                            .DataValueField("HospRowid")
+                            .DataSource(ds => ds.Read("GetHospital_Read", "SysHospitalGrafting"))
+                            .TemplateId("SysHospital-item-template")
+                            .Events(events => events.Change("onChange")).HtmlAttributes(new { style = "width: 100%; height: 700px;" }))
+            </div>
+
+            <div class="col-md-5">
+                @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SysHospitalDept>()
+                    .Name("grid_Dept")
+                    .Columns(columns =>
+                    {
+                        columns.Bound(o => o.HDDeptName).EditorTemplateName("HospitalDeptEditor").Title("名稱").Width(90);
+                        columns.Bound(o => o.HDUserName).EditorTemplateName("HospitalUserEditor").Title("單位主管").Width(90);
+                        columns.Bound(o => o.HDDisplaySeq).Title("順序");
+                        columns.Command(command =>
+                        {
+                            command.Edit().Text("修改");
+                            command.Custom("刪除").IconClass("k-icon k-i-close").Click("openWindow");
+                            //command.Destroy().Text("刪除");
+                        }).Width(180);
+                    })
+                    .ToolBar(toolbar =>
+                    {
+                        toolbar.Create().Text("加入部門");
+                        toolbar.Excel().Text("輸出到 Excel");
+                    })
+                    .Excel(e => e.Filterable(true).AllPages(true))
+                    .ColumnMenu()
+                    .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                    .Pageable(page => page.Refresh(true)
+                        .ButtonCount(10)
+                        .PageSizes(new[] { 10, 20, 30, 50, 100, 200, 500, 1000 })
+                        .Messages(message => message.ItemsPerPage("每頁顯示數目")))
+                    .Navigatable()
+                    .Sortable(sortable => { sortable.SortMode(GridSortMode.MultipleColumn); })
+                    .Filterable().Scrollable(scrollable => scrollable.Enabled(true).Height("600"))
+                    .DataSource(dataSource => dataSource.Ajax()
+                        .Sort(sort => sort.Add("HDDisplaySeq").Ascending())
+                        .Model(model => { model.Id(o => o.HDRowid); })
+                        .Read(read => read.Action("SysHospitalDept_Read", "SysHospital"))
+                        .Update(update => update.Action("SysHospitalDept_Update", "SysHospital"))
+                        .Create(create => create.Action("SysHospitalDept_Create", "SysHospital").Data("DataHandlerName"))
+                        .Destroy(destroy => destroy.Action("SysHospitalDept_Destroy", "SysHospital"))
+                        .Events(events => events.Error("error_handler").Sync("sync_handler")))
+                    .NoRecords("目前未有任何資料顯示 !")
+                )
+            </div>
+
+            <div class="col-md-4">
+                <div>
+                    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SysHospitalClinicRoom>()
+                        .Name("grid_Room")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(o => o.HCRClinicRoomName).EditorTemplateName("HospitalClinicRoomEditor").Title("診間名稱").Width(100);
+                            columns.Bound(o => o.HCRDisplaySeq).Title("順序");
+                            columns.Command(command =>
+                            {
+                                command.Edit().Text("修改");
+                                command.Custom("刪除").IconClass("k-icon k-i-close").Click("openWindow");
+                                //command.Destroy().Text("刪除");
+                            }).Width(180);
+                        })
+                        .ToolBar(toolbar =>
+                        {
+                            toolbar.Create().Text("加入診間");
+                            toolbar.Excel().Text("輸出到 Excel");
+                        })
+                        .Excel(e => e.Filterable(true).AllPages(true))
+                        .ColumnMenu()
+                        .Editable(editable => editable.Mode(GridEditMode.InLine).DisplayDeleteConfirmation(false))
+                        .Pageable(page => page.Refresh(true)
+                            .ButtonCount(10)
+                            .PageSizes(new[] { 10, 20, 30, 50, 100, 200, 500, 1000 })
+                            .Messages(message => message.ItemsPerPage("每頁顯示數目")))
+                        .Navigatable()
+                        .Sortable(sortable => { sortable.SortMode(GridSortMode.MultipleColumn); })
+                        .Filterable().Scrollable(scrollable => scrollable.Enabled(true).Height("600"))
+                        .DataSource(dataSource => dataSource.Ajax()
+                            .Sort(sort => sort.Add("HCRDisplaySeq").Ascending())
+                            .Model(model => { model.Id(o => o.HCRRowid); })
+                            .Read(read => read.Action("SysHospitalClinicRoom_Read", "SysHospital"))
+                            .Update(update => update.Action("SysHospitalClinicRoom_Update", "SysHospital"))
+                            .Create(create => create.Action("SysHospitalClinicRoom_Create", "SysHospital").Data("DataHandlerName"))
+                            .Destroy(destroy => destroy.Action("SysHospitalClinicRoom_Destroy", "SysHospital"))
+                            .Events(events => events.Error("error_handler").Sync("sync_handler")))
+                        .NoRecords("目前未有任何資料顯示 !")
+                    )
+                </div>
+                @*<div style="padding-top:10px;">
+                    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_InfoPanel>()
+                        .Name("grid_InfoPanel")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(o => o.IPName).EditorTemplateName("HospitalClinicRoomEditor").Width(200);
+                            columns.Bound(o => o.IPDisplaySeq);                            
+                            columns.Command(command =>
+                            {
+                                command.Edit().Text("修改");
+                                command.Custom("刪除").IconClass("k-icon k-i-close").Click("openWindow");
+                            }).Width(180);
+                        })
+                        .ToolBar(toolbar =>
+                        {
+                            toolbar.Create().Text("新增資訊面板");
+                            toolbar.Excel().Text("輸出到 Excel");
+                        })
+                        .Excel(e => e.Filterable(true).AllPages(true))
+                        .ColumnMenu()
+                        .Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_InfoPanel_Editor").Window(w => w.Title("資訊面板資料維護").Width(700).Draggable()).DisplayDeleteConfirmation(false))
+                        .Pageable(page => page.Refresh(true)
+                            .ButtonCount(10)
+                            .PageSizes(new[] { 10, 20, 30, 50, 100, 200, 500, 1000 })
+                            .Messages(message => message.ItemsPerPage("每頁顯示數目")))
+                        .Navigatable()
+                        .Sortable(sortable => { sortable.SortMode(GridSortMode.MultipleColumn); })
+                        .Filterable().Scrollable(scrollable => scrollable.Enabled(true).Height("200"))
+                        .DataSource(dataSource => dataSource.Ajax()
+                            //.Sort(sort => sort.Add("HCRDisplaySeq").Ascending())
+                            .Model(model => { model.Id(o => o.IPRowid); })
+                            .Read(read => read.Action("InfoPanel_Read", "InfoPanel"))
+                            .Update(update => update.Action("InfoPanel_Update", "InfoPanel"))
+                            .Create(create => create.Action("InfoPanel_Create", "InfoPanel").Data("DataHandlerName"))
+                            .Destroy(destroy => destroy.Action("InfoPanel_Destroy", "InfoPanel"))
+                            .Events(events => events.Error("error_handler").Sync("sync_handler")))
+                        .NoRecords("目前未有任何資料顯示 !")
+                    )
+                </div>*@
+            </div>
+        </div>
+    </div>
+
+    <div id="modalWindow">
+        <h4>確定要刪除資料嗎 ?</h4>
+        <div style="text-align:right;">
+            <button id="yes" class="k-button">要刪除</button>
+            <button id="no" class="k-button">取消</button>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        function openWindow(e) {
+            e.preventDefault();
+
+            var grid = this;
+            var row = $(e.currentTarget).closest("tr");
+            wnd.center().open();
+
+            $("#yes").click(function () {
+                grid.removeRow(row);
+                wnd.close();
+            });
+
+            $("#no").click(function () {
+                wnd.close();
+            });
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            var element = $('#lb').data('kendoListBox').select();
+            var dsa = JSON.parse(JSON.stringify($('#lb').data('kendoListBox').dataItem(element[0]), ['HospRowid']));
+            $("#grid_Dept").data("kendoGrid").dataSource.read({ id: dsa['HospRowid'] });
+            $("#grid_Room").data("kendoGrid").dataSource.read({ id: dsa['HospRowid'] });
+            $("#grid_InfoPanel").data("kendoGrid").dataSource.read({ id: dsa['HospRowid'] });
+            //this.read();
+        }
+
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+
+        function onChange(e) {
+            var element = e.sender.select();
+            var dsa = JSON.parse(JSON.stringify(e.sender.dataItem(element[0]), ['HospRowid']));
+
+            $("#grid_Dept").data("kendoGrid").dataSource.read({ id: dsa['HospRowid'] });
+            $("#grid_Room").data("kendoGrid").dataSource.read({ id: dsa['HospRowid'] });
+            $("#grid_InfoPanel").data("kendoGrid").dataSource.read({ id: dsa['HospRowid'] });
+        }
+
+        function DataHandlerName() {
+            var element = $('#lb').data('kendoListBox').select();
+            var dsa = JSON.parse(JSON.stringify($('#lb').data('kendoListBox').dataItem(element[0]), ['HospRowid']));
+            //alert(dsa['HospRowid'])
+
+            var request = {
+                id: dsa['HospRowid']
+            };
+
+            return request;
+        }
+
+        $("#search").on("input", function (e) {
+            var listBox = $("#lb").getKendoListBox();
+            listBox.dataSource.filter({
+                field: "HospName",
+                value: $(e.target).val(),
+                operator: "contains"
+            });
+        })
+    </script>
+
+    <script id="SysHospital-item-template" type="text/x-kendo-template">
+        @*<span class="k-state-default" style="background-image: url('../content/web/Customers/#:data.CustomerID#.jpg')"></span>*@
+        <div class="container-fluid">
+            <div class="row form-group-padding">
+                <div class="col-sm-4 no-padding">
+                    <div class="hospid-css">#: data.HospID #</div>
+                </div>
+                <div class="col-sm-7 no-padding" style="margin-left:5px !important;">
+                    <div class="hospname-css">#: data.HospName #</div>
+                </div>
+            </div>
+        </div>
+    </script>
+</body>
+</html>

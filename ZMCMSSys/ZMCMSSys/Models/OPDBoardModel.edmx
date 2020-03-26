@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OPDBoardModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="InfoPanel">
+          <Key>
+            <PropertyRef Name="IPRowid" />
+          </Key>
+          <Property Name="IPRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="IPHospRowid" Type="nvarchar" MaxLength="128" />
+          <Property Name="IPName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="IPLoginDate" Type="datetime" />
+          <Property Name="IPDisplaySeq" Type="int" />
+          <Property Name="IPSectionName" Type="nvarchar" MaxLength="50" />
+          <Property Name="IPDoctorName" Type="nvarchar" MaxLength="10" />
+          <Property Name="IPNurseName" Type="nvarchar" MaxLength="10" />
+          <Property Name="IPCallNumber" Type="int" />
+          <Property Name="IPOnLine" Type="bit" Nullable="false" />
+          <Property Name="IPLoginSeq" Type="int" />
+          <Property Name="IPCenterSeq" Type="int" />
+          <Property Name="IPCBDCode" Type="nvarchar" MaxLength="10" />
+          <Property Name="IPKey" Type="nvarchar" MaxLength="16" Nullable="false" />
+          <Property Name="IPCipher" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="OPDBoardModelStoreContainer">
+          <EntitySet Name="InfoPanel" EntityType="Self.InfoPanel" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OPDBoardModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OPDBoardEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="InfoPanel" EntityType="OPDBoardModel.InfoPanel" />
+        </EntityContainer>
+        <EntityType Name="InfoPanel">
+          <Key>
+            <PropertyRef Name="IPRowid" />
+          </Key>
+          <Property Name="IPRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IPHospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="IPName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IPLoginDate" Type="DateTime" Precision="3" />
+          <Property Name="IPDisplaySeq" Type="Int32" />
+          <Property Name="IPSectionName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IPDoctorName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IPNurseName" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IPCallNumber" Type="Int32" />
+          <Property Name="IPOnLine" Type="Boolean" Nullable="false" />
+          <Property Name="IPLoginSeq" Type="Int32" />
+          <Property Name="IPCenterSeq" Type="Int32" />
+          <Property Name="IPCBDCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="IPKey" Type="String" Nullable="false" MaxLength="16" FixedLength="false" Unicode="true" />
+          <Property Name="IPCipher" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OPDBoardModelStoreContainer" CdmEntityContainer="OPDBoardEntities">
+          <EntitySetMapping Name="InfoPanel">
+            <EntityTypeMapping TypeName="OPDBoardModel.InfoPanel">
+              <MappingFragment StoreEntitySet="InfoPanel">
+                <ScalarProperty Name="IPCipher" ColumnName="IPCipher" />
+                <ScalarProperty Name="IPKey" ColumnName="IPKey" />
+                <ScalarProperty Name="IPCBDCode" ColumnName="IPCBDCode" />
+                <ScalarProperty Name="IPCenterSeq" ColumnName="IPCenterSeq" />
+                <ScalarProperty Name="IPLoginSeq" ColumnName="IPLoginSeq" />
+                <ScalarProperty Name="IPOnLine" ColumnName="IPOnLine" />
+                <ScalarProperty Name="IPCallNumber" ColumnName="IPCallNumber" />
+                <ScalarProperty Name="IPNurseName" ColumnName="IPNurseName" />
+                <ScalarProperty Name="IPDoctorName" ColumnName="IPDoctorName" />
+                <ScalarProperty Name="IPSectionName" ColumnName="IPSectionName" />
+                <ScalarProperty Name="IPDisplaySeq" ColumnName="IPDisplaySeq" />
+                <ScalarProperty Name="IPLoginDate" ColumnName="IPLoginDate" />
+                <ScalarProperty Name="IPName" ColumnName="IPName" />
+                <ScalarProperty Name="IPHospRowid" ColumnName="IPHospRowid" />
+                <ScalarProperty Name="IPRowid" ColumnName="IPRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

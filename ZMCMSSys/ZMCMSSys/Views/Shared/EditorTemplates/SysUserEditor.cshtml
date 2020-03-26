@@ -1,0 +1,15 @@
+﻿@using System.Collections
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownList()
+        .Name("UserRowid")
+        .DataValueField("UserRowid")
+        .DataTextField("UserName")
+        .FooterTemplate("總計 <strong>#: instance.dataSource.total() #</strong> 筆資料")
+        .Template("<span class=\"k-state-default\">#: data.UserNo #   #: data.UserName #</span>")
+        .SelectedIndex(0)
+        .DataSource(ds => ds
+            .Read(read => read.Action("GetUserData", "ZMCMSSysGetData"))
+        )
+        .Filter("contains")
+ )

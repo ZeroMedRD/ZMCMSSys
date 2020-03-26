@@ -1,0 +1,23 @@
+﻿@using System.Collections
+@using Kendo.Mvc.UI
+
+@*@(Html.Kendo().DropDownListFor(m => m)
+            .Name("HDSupervisor")
+            .DataValueField("CBDCode")
+            .DataTextField("CBDDescription")
+            .SelectedIndex(0)
+            .DataSource(ds => ds
+                .Read(read => read.Action("GetCombos", "UserData", new { stext = "DEPT" }))
+            )
+            .Filter("contains")
+)*@
+@(Html.Kendo().DropDownListFor(m => m)
+        .Name("HDUserRowid")
+        .DataValueField("UserRowid")
+        .DataTextField("UserName")
+        .SelectedIndex(0)
+        .DataSource(ds => ds
+            .Read(read => read.Action("GetBelongCompanyUserData", "ZMCMSSysGetData"))
+        )
+        .Filter("contains")
+ )

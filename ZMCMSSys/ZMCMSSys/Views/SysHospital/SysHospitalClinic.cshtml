@@ -1,0 +1,152 @@
+﻿
+@{
+    ViewBag.Title = "醫事機構科別資料維護";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    <h2>醫事機構科別資料維護</h2>
+    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_Hospitals>()
+        .Name("grid_SysHospital")
+        .Columns(columns =>
+        {
+            columns.Bound(c => c.HospName);
+            columns.Bound(c => c.HospAddress);
+            columns.Bound(c => c.HospAreaCode);
+            columns.Bound(c => c.HospPhone);
+        })
+        .ToolBar(toolbar =>
+        {
+            //toolbar.Create().Text("新增資料");
+            toolbar.Excel().Text("輸出到 Excel");
+        })
+        .ColumnMenu()
+        .Pageable(page => page.Refresh(true)
+            .ButtonCount(10)
+            .PageSizes(new[] { 10, 20, 30, 50 })
+            .Messages(message => message.ItemsPerPage("每頁顯示數目")))
+         .Navigatable()
+         .Filterable()
+         .Scrollable(scrollable => scrollable.Enabled(true).Height("450"))
+         .DataSource(dataSource => dataSource
+            .Ajax()
+            .Model(model => model.Id(p => p.HospRowid))
+            .Read(read => read.Action("SysHospitalActive_Read", "SysHospital"))
+            .PageSize(30))
+         .Reorderable(reorderable => reorderable.Columns(true))
+         .Events(events => events.DataBound("dataBound"))
+         .ClientDetailTemplateId("HospitalClinicTemplate")
+    )
+
+    <script id="HospitalClinicTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SysHospitalClinic>()
+            .Name("HC_#=HospRowid#")
+            .Columns(columns =>
+            {
+                columns.Bound(o => o.HCDeptName).EditorTemplateName("HospitalClinicEditor").Title("科別名稱");
+                columns.Bound(o => o.HCDisplaySeq).Title("選單顯示順序").Width(150);
+                columns.Command(command =>
+                {
+                    command.Edit().Text("修改");
+                    command.Destroy().Text("刪除");
+                }).Width(180);
+            })
+            .ToolBar(tools => tools.Create().Text("加入科別"))
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable(page => page.Refresh(true))
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Sort(sort => sort.Add("HCDisplaySeq").Ascending())
+                .Model(model =>
+                {
+                    model.Id(o => o.HCRowid);
+                })
+                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                .Read(read => read.Action("SysHospitalClinic_Read", "SysHospital", new { HospRowid = "#=HospRowid#" }))
+                .Update(update => update.Action("SysHospitalClinic_Update", "SysHospital", new { HospRowid = "#=HospRowid#" }))
+                .Create(create => create.Action("SysHospitalClinic_Create", "SysHospital", new { HospRowid = "#=HospRowid#" }))
+                .Destroy(destroy => destroy.Action("SysHospitalClinic_Destroy", "SysHospital")))
+            .Pageable()
+            .Sortable()
+            .ClientDetailTemplateId("HospitalClinicDoctorTemplate")
+            .ToClientTemplate()
+        )
+    </script>
+
+    <script id="HospitalClinicDoctorTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SysHospitalClinicDoctor>()
+            .Name("HCD_#=HospRowid##=HCRowid#")
+            .Columns(columns =>
+            {
+                //columns.Bound(o => o.UserRowid).Hidden(true);
+                columns.Bound(o => o.UserName).EditorTemplateName("HospitalClinicDoctorEditor").Title("醫師姓名");
+                columns.Bound(o => o.HCDBelongMedicalGroup).Title("家醫群醫師請打勾");   //.ClientTemplate("# if(HCDBelongMedicalGroup==true){#" + "<input type='checkbox' checked='checked' id='chboxSelect' class='checkBox' disabled />" + "#}else{#" + "<input type='checkbox' id='chboxSelect' class='checkBox' disabled />" + "#}#").Title("家醫群醫師請打勾").Filterable(false);
+                columns.Bound(o => o.HCDQuota).Title("第一階家醫照護病人分配額度");
+                columns.Bound(o => o.HCDQuota2).Title("第二階家醫照護病人分配額度");
+                columns.Bound(o => o.HCDQuota3).Title("第三階家醫照護病人分配額度");
+                columns.Bound(o => o.HCDDisplaySeq).Title("選單顯示順序");
+                columns.Command(command =>
+                {
+                    command.Edit().Text("修改");
+                    command.Destroy().Text("刪除");
+                }).Width(180);
+            })
+            .ToolBar(tools => tools.Create().Text("加入科別所屬醫師"))
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable(page => page.Refresh(true))
+            .DataSource(dataSource => dataSource
+                .Ajax()
+                .Sort(sort => sort.Add("HCDDisplaySeq").Ascending())
+                .Model(model =>
+                {
+                    model.Id(p => p.HCDRowid);
+                    //model.Field(p => p.HospRowid).Editable(false);
+                    //model.Field(p => p.UserRowid).Editable(false);
+                    //model.Field(p => p.UserName).Editable(false);
+                    //model.Field(p => p.HCDDisplaySeq).Editable(false);
+                })
+                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                .Read(read => read.Action("SysHospitalClinicDoctor_Read", "SysHospital", new { HospRowid = "#=HospRowid#", HCRowid = "#=HCRowid#" }))
+                .Update(update => update.Action("SysHospitalClinicDoctor_Update", "SysHospital", new { HospRowid = "#=HospRowid#", HCRowid = "#=HCRowid#" }))
+                .Create(create => create.Action("SysHospitalClinicDoctor_Create", "SysHospital", new { HospRowid = "#=HospRowid#", HCRowid = "#=HCRowid#" }))
+                .Destroy(destroy => destroy.Action("SysHospitalClinicDoctor_Destroy", "SysHospital")))
+            .Pageable()
+            .Sortable()
+            .ToClientTemplate()
+        )
+    </script>
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <script>
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+</body>
+</html>

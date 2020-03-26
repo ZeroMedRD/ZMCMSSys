@@ -1,0 +1,139 @@
+﻿@{
+    ViewBag.Title = "系統角色管理維護";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    <h2>使用者所屬角色管理維護</h2>
+    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_AspNetUsers>()
+        .Name("grid_AspNetUser")
+        .Columns(columns =>
+        {
+            //columns.Bound(c => c.Id).Hidden(true);
+            columns.Bound(c => c.UserNo).EditorTemplateName("SysUserEditor");
+            columns.Bound(c => c.UserRealName)
+             .ClientTemplate(
+                 @"<div class='user-panel'><div class='pull-left image'><img src='" + @Url.Content("/PhotoCloud/PersonalImages/") + "#=UserRowid#_" + "#=UserPhoto#' class='img-circle' /></div><div class='pull-left' style='padding:15px 0 0 5px;'>#: UserRealName #</div></div>");
+            columns.Bound(c => c.UserName);
+            columns.Bound(c => c.Email);
+            columns.Bound(c => c.UserProIdentityDescription);
+            columns.Bound(c => c.UserBelongCompanyDescription);
+            columns.Bound(c => c.LockoutEndDateUtc).Format("{0: yyyy-MM-dd HH:mm}").EditorTemplateName("SysUserLockoutEndDateUtcEditor");
+            columns.Command(command =>
+            {
+                command.Edit().Text("修改");
+                command.Destroy().Text("刪除");
+            }).Width(180);
+        })
+        .Events(e => e.Edit("edit"))
+        .ToolBar(toolbar =>
+        {
+            //toolbar.Custom().Text("新增資料").Action("Register", "Account"); // Create().Text("新增資料");
+            toolbar.Create().Text("新增資料");
+            toolbar.Excel().Text("輸出到 Excel");
+            //toolbar.Custom().Text("角色複製").Url(Url.Action("SysUserCopy","SysUser"));
+            toolbar.Custom().Text("角色複製").Action("SysUserCopy", "SysUser");
+        })
+        .Excel(e => e.AllPages(true))
+        .Editable(editable => editable.Mode(GridEditMode.InLine))
+        //.Editable(editable => editable.Mode(GridEditMode.PopUp).TemplateName("_SysUser").Window(w => w.Title("資料維護").Width(700)))
+        .Pageable().Sortable().Filterable()
+        .DataSource(dataSource => dataSource
+            .Ajax()
+            .Sort(s => s.Add("UserNo").Ascending())
+            .Model(model =>
+            {
+                model.Id(p => p.Id);
+                //model.Field(p => p.UserNo).Editable(false);
+                model.Field(p => p.UserName).Editable(false);
+                model.Field(p => p.UserRealName).Editable(false);
+                model.Field(p => p.UserProIdentityDescription).Editable(false);
+                model.Field(p => p.UserBelongCompanyDescription).Editable(false);
+            })
+            .Events(events => events.Error("error_handler").Sync("sync_handler"))
+            .Read(read => read.Action("SysUser_Read", "ZMSystem", new { MGType = Request.QueryString["MGType"] }))
+            .Create(create => create.Action("SysUser_Create", "ZMSystem"))
+            .Update(update => update.Action("SysUser_Update", "ZMSystem"))
+            .Destroy(destroy => destroy.Action("SysUser_Destroy", "ZMSystem"))
+        )
+        //.Events(events => events.DataBound("dataBound"))
+        .ClientDetailTemplateId("SysUserRoleTemplate")
+    )
+
+    <script id="SysUserRoleTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SysUserRoleTemplate>()
+            .Name("#=Id#")
+            .Columns(columns =>
+            {
+                columns.Bound(o => o.SRName).EditorTemplateName("RoleEditor").Title("應用程式名稱");
+                //columns.Bound(o => o.SRPActive).Title("選單焦點").Width(100);
+                columns.Bound(o => o.SURDisplaySeq).Title("選單顯示順序").Width(50);
+                columns.Command(command =>
+                {
+                    command.Edit().Text("修改");
+                    command.Destroy().Text("刪除");
+                }).Width(180);
+            })
+            .ToolBar(tools => tools.Create().Text("加入連結應用程式"))
+            .Editable(editable => editable.Mode(GridEditMode.InLine))
+            .Pageable(page => page.Refresh(true))
+            .DataSource(dataSource => dataSource.Ajax()
+                .Sort(sort => sort.Add("SURDisplaySeq").Ascending())
+                .Model(model => { model.Id(o => o.SURRowid); })
+                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                .Read(read => read.Action("SysUserRole_Read", "ZMSystem", new { URRowid = "#=Id#" }))
+                .Update(update => update.Action("SysUserRole_Update", "ZMSystem", new { URRowid = "#=Id#" }))
+                .Create(create => create.Action("SysUserRole_Create", "ZMSystem", new { URRowid = "#=Id#" }))
+                .Destroy(destroy => destroy.Action("SysUserRole_Destroy", "ZMSystem"))
+            .PageSize(10))
+            .Pageable()
+            .Sortable()
+            .ToClientTemplate()
+        )
+    </script>
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+
+        function edit(e) {
+            //if (e.model.isNew() == false) {
+            var ddlEl = e.container.find("input[name='UserRowid']");
+            if (!e.model.isNew() && ddlEl.length > 0) {
+                var ddl = e.container.find("input[name='UserRowid']").data().kendoDropDownList;
+                ddl.enable(false);
+            }
+
+            //$("#UserRowid_list").attr("readonly", true);
+            //alert("Edit Mode");
+            //}
+        }
+    </script>
+</body>
+</html>

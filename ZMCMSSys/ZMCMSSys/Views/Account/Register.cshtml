@@ -1,0 +1,149 @@
+﻿@model ZMCMS.Models.RegisterViewModel
+
+@{
+    //ViewBag.Title = "註冊";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@*<h2>@ViewBag.Title.</h2>*@
+
+<div class="inner-bg">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-sm-offset-3">
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">註冊基本資料</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <!-- form start -->
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="box-body">
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.UserRealName, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.UserRealName, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        @*<div class="form-group">
+                            @Html.LabelFor(m => m.Rowid, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(p => p.Rowid, (IEnumerable<SelectListItem>)ViewBag.HospInfo, "-- 請選擇醫事機構 --", new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.ClinicDept, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(p => p.ClinicDept, (IEnumerable<SelectListItem>)ViewBag.ClinicDept, "-- 請選擇所屬科別 --", new { @class = "form-control" })
+                            </div>
+                        </div>*@
+
+                        @*<div class="form-group">
+                            @Html.LabelFor(m => m.JobTitle, new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.DropDownListFor(p => p.JobTitle, (IEnumerable<SelectListItem>)ViewBag.JobTitle, "-- 請選擇系統角色 --", new { @class = "form-control" })
+                            </div>
+                        </div>*@
+
+                        <div class="form-group">
+                            <div class="col-md-offset-2 col-md-10">
+                                <input type="submit" class="btn btn-default" value="註冊" />
+                            </div>
+                        </div>
+                    </div>
+                        <!-- /.box-body -->
+                        @*<div class="box-footer">
+                                <button type="submit" class="btn btn-default">Cancel</button>
+                                <button type="submit" class="btn btn-info pull-right">Sign in</button>
+                            </div>*@
+                        <!-- /.box-footer -->
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <h4>建立新的帳戶。</h4>
+        <hr />
+        @Html.ValidationSummary("", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" class="btn btn-default" value="註冊" />
+            </div>
+        </div>
+    }*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

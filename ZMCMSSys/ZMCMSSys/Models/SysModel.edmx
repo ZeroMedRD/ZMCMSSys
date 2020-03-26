@@ -1,0 +1,984 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="SysModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bit" />
+          <Property Name="PasswordHash" Type="nvarchar(max)" />
+          <Property Name="SecurityStamp" Type="nvarchar(max)" />
+          <Property Name="PhoneNumber" Type="nvarchar(max)" />
+          <Property Name="PhoneNumberConfirmed" Type="bit" />
+          <Property Name="TwoFactorEnabled" Type="bit" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" />
+          <Property Name="LockoutEnabled" Type="bit" />
+          <Property Name="AccessFailedCount" Type="int" />
+          <Property Name="UserRowid" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="256" />
+          <Property Name="CreateDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ComboDetail">
+          <Key>
+            <PropertyRef Name="CBDRowid" />
+          </Key>
+          <Property Name="CBDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBMRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBDCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CBDDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="CBDDisplayFlag" Type="bit" />
+          <Property Name="CBDDisplayOrder" Type="int" />
+          <Property Name="CBDLastModifiedDateTime" Type="datetime" />
+          <Property Name="CBDModifiedUserRowid" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="ComboHDetail">
+          <Key>
+            <PropertyRef Name="CBDRowid" />
+          </Key>
+          <Property Name="CBDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBMRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBDCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="CBDDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="CBDDisplayFlag" Type="bit" />
+          <Property Name="CBDDisplayOrder" Type="int" />
+          <Property Name="CBDLastModifiedDateTime" Type="datetime" />
+          <Property Name="CBDModifiedUserRowid" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="ComboHMaster">
+          <Key>
+            <PropertyRef Name="CBMRowid" />
+          </Key>
+          <Property Name="CBMRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBMHospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBMClass" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CBMDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="CBMRemark" Type="nvarchar" MaxLength="100" />
+          <Property Name="CBMGroup" Type="char" MaxLength="2" />
+          <Property Name="CBMLastModifiedDateTime" Type="datetime" />
+          <Property Name="CBMModifiedUserRowid" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="ComboMaster">
+          <Key>
+            <PropertyRef Name="CBMRowid" />
+          </Key>
+          <Property Name="CBMRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBMClass" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="CBMDescription" Type="nvarchar" MaxLength="50" />
+          <Property Name="CBMRemark" Type="nvarchar" MaxLength="100" />
+          <Property Name="CBMGroup" Type="char" MaxLength="2" />
+          <Property Name="CBMLastModifiedDateTime" Type="datetime" />
+          <Property Name="CBMModifiedUserRowid" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="SysHCDept">
+          <Key>
+            <PropertyRef Name="SHDRowid" />
+          </Key>
+          <Property Name="SHDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SHDCode" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SHDDisplayOrder" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysHospital">
+          <Key>
+            <PropertyRef Name="HospRowid" />
+          </Key>
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospID" Type="char" MaxLength="10" Nullable="false" />
+          <Property Name="HospName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="HospPrincipal" Type="nvarchar" MaxLength="128" />
+          <Property Name="HospDean" Type="nvarchar" MaxLength="128" />
+          <Property Name="HospAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="HospAreaCode" Type="nvarchar" MaxLength="3" />
+          <Property Name="HospPhone" Type="nvarchar" MaxLength="20" />
+          <Property Name="HospFaxno" Type="nvarchar" MaxLength="20" />
+          <Property Name="HospEmail" Type="nvarchar" MaxLength="255" />
+          <Property Name="HospLevel" Type="nvarchar" MaxLength="10" />
+          <Property Name="HospHIS" Type="nvarchar" MaxLength="50" />
+          <Property Name="HospActive" Type="bit" />
+          <Property Name="HospImage" Type="nvarchar(max)" />
+          <Property Name="HospRegSys" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="SysHospitalClinic">
+          <Key>
+            <PropertyRef Name="HCRowid" />
+          </Key>
+          <Property Name="HCRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HCClinicDept" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HCDisplaySeq" Type="int" />
+        </EntityType>
+        <EntityType Name="SysHospitalClinicDoctor">
+          <Key>
+            <PropertyRef Name="HCDRowid" />
+          </Key>
+          <Property Name="HCDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HCRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HCDBelongMedicalGroup" Type="bit" Nullable="false" />
+          <Property Name="HCDQuota" Type="int" Nullable="false" />
+          <Property Name="HCDQuota2" Type="int" Nullable="false" />
+          <Property Name="HCDQuota3" Type="int" Nullable="false" />
+          <Property Name="HCDDisplaySeq" Type="int" />
+        </EntityType>
+        <EntityType Name="SysHospitalClinicRoom">
+          <Key>
+            <PropertyRef Name="HCRRowid" />
+          </Key>
+          <Property Name="HCRRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HCRClinicRoom" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HCRDisplaySeq" Type="int" />
+        </EntityType>
+        <EntityType Name="SysHospitalDept">
+          <Key>
+            <PropertyRef Name="HDRowid" />
+          </Key>
+          <Property Name="HDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HDClinicDept" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="HDUserRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HDDisplaySeq" Type="int" />
+        </EntityType>
+        <EntityType Name="SysHospitalGrafting">
+          <Key>
+            <PropertyRef Name="HGRowid" />
+          </Key>
+          <Property Name="HGRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="CBDRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HGMachine" Type="nvarchar" MaxLength="255" />
+          <Property Name="HGMachinePort" Type="char" MaxLength="5" />
+          <Property Name="HGLoginUser1" Type="nvarchar" MaxLength="128" />
+          <Property Name="HGLoginUser2" Type="nvarchar" MaxLength="128" />
+          <Property Name="HGLoginUser3" Type="nvarchar" MaxLength="128" />
+          <Property Name="HGLoginPassword" Type="nvarchar(max)" />
+          <Property Name="HGGetDataPath" Type="nvarchar" MaxLength="255" />
+          <Property Name="HGSaveLogPath" Type="nvarchar" MaxLength="255" />
+          <Property Name="HGUrl" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="SysMedicalGroup">
+          <Key>
+            <PropertyRef Name="MGRowid" />
+          </Key>
+          <Property Name="MGRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MGName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="MGDescript" Type="nvarchar(max)" />
+          <Property Name="MGFont" Type="nvarchar" MaxLength="255" />
+          <Property Name="MGType" Type="char" MaxLength="1" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysMedicalGroupHospital">
+          <Key>
+            <PropertyRef Name="MGHRowid" />
+          </Key>
+          <Property Name="MGHRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MGRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="HospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MGHDisplaySeq" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysOpinionReaction">
+          <Key>
+            <PropertyRef Name="ORRowid" />
+          </Key>
+          <Property Name="ORRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ORUserRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="ORDate" Type="datetime" Nullable="false" />
+          <Property Name="ORSubject" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="ORContent" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysOpinionReactionEmp">
+          <Key>
+            <PropertyRef Name="ORERowid" />
+          </Key>
+          <Property Name="ORERowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="OREHospRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="OREUserRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysProgram">
+          <Key>
+            <PropertyRef Name="SPRowid" />
+          </Key>
+          <Property Name="SPRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SPName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SPUrl" Type="nvarchar" MaxLength="255" />
+          <Property Name="SPFont" Type="nvarchar" MaxLength="100" />
+          <Property Name="SPSysNo" Type="char" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="SysRole">
+          <Key>
+            <PropertyRef Name="SRRowid" />
+          </Key>
+          <Property Name="SRRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SRName" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="SRDisplayName" Type="nvarchar" MaxLength="255" />
+          <Property Name="SRDescript" Type="nvarchar" MaxLength="255" />
+          <Property Name="SRUrl" Type="nvarchar" MaxLength="255" />
+          <Property Name="SRFont" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="SysRoleProgram">
+          <Key>
+            <PropertyRef Name="SRPRowid" />
+          </Key>
+          <Property Name="SRPRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SRPActive" Type="bit" Nullable="false" />
+          <Property Name="SRPDisplaySeq" Type="int" Nullable="false" />
+          <Property Name="SRRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SPRowid" Type="nvarchar" MaxLength="128" />
+        </EntityType>
+        <EntityType Name="SysUserRole">
+          <Key>
+            <PropertyRef Name="SURRowid" />
+          </Key>
+          <Property Name="SURRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SURDisplaySeq" Type="int" Nullable="false" />
+          <Property Name="URRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="SRRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="UserData">
+          <Key>
+            <PropertyRef Name="UserRowid" />
+          </Key>
+          <Property Name="UserRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserCardNo" Type="nchar" MaxLength="10" />
+          <Property Name="UserCardNoExtend" Type="nchar" MaxLength="10" />
+          <Property Name="UserNo" Type="nvarchar" MaxLength="255" Nullable="false" />
+          <Property Name="UserName" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserIdno" Type="char" MaxLength="10" />
+          <Property Name="UserBirthday" Type="date" />
+          <Property Name="UserGender" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserBloodType" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="UserMarriage" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserAreaCode" Type="varchar" MaxLength="5" />
+          <Property Name="UserAddress" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserMobilePhone" Type="char" MaxLength="15" />
+          <Property Name="UserHomePhone" Type="char" MaxLength="15" />
+          <Property Name="UserDept" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserBelongDept" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserRank" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserJobCategory" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserProIdentity" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserPosition" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserOnBoardDay" Type="date" />
+          <Property Name="UserResignationDay" Type="date" />
+          <Property Name="UserInstitute" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserEducationDept" Type="nvarchar" MaxLength="50" />
+          <Property Name="UserEducationDegrees" Type="nvarchar" MaxLength="10" />
+          <Property Name="UserInsurance" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserBankAccount" Type="char" MaxLength="13" />
+          <Property Name="UserWorkPlace" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserBelongCompany" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserPhoto" Type="nvarchar(max)" />
+          <Property Name="UserLicense" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserCertificate" Type="nvarchar" MaxLength="255" />
+          <Property Name="UserBusinessDate" Type="date" />
+          <Property Name="UserBusinessEndDate" Type="date" />
+          <Property Name="UserCreate" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserCreateDate" Type="date" />
+          <Property Name="UserUpdate" Type="nvarchar" MaxLength="128" />
+          <Property Name="UserUpdateDate" Type="date" />
+          <Property Name="UserExperience" Type="nvarchar(max)" />
+          <Property Name="UserExpertise" Type="nvarchar(max)" />
+          <Property Name="UserTreatment" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="UserMedicalGroup">
+          <Key>
+            <PropertyRef Name="UserMGRowid" />
+          </Key>
+          <Property Name="UserMGRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="MGRowid" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserMGCreateDate" Type="date" Nullable="false" />
+          <Property Name="UserMGCreateUser" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="SysModelStoreContainer">
+          <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComboDetail" EntityType="Self.ComboDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComboHDetail" EntityType="Self.ComboHDetail" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComboHMaster" EntityType="Self.ComboHMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComboMaster" EntityType="Self.ComboMaster" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHCDept" EntityType="Self.SysHCDept" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHospital" EntityType="Self.SysHospital" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHospitalClinic" EntityType="Self.SysHospitalClinic" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHospitalClinicDoctor" EntityType="Self.SysHospitalClinicDoctor" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHospitalClinicRoom" EntityType="Self.SysHospitalClinicRoom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHospitalDept" EntityType="Self.SysHospitalDept" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysHospitalGrafting" EntityType="Self.SysHospitalGrafting" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysMedicalGroup" EntityType="Self.SysMedicalGroup" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysMedicalGroupHospital" EntityType="Self.SysMedicalGroupHospital" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysOpinionReaction" EntityType="Self.SysOpinionReaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysOpinionReactionEmp" EntityType="Self.SysOpinionReactionEmp" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysProgram" EntityType="Self.SysProgram" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysRole" EntityType="Self.SysRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysRoleProgram" EntityType="Self.SysRoleProgram" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="SysUserRole" EntityType="Self.SysUserRole" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserData" EntityType="Self.UserData" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="UserMedicalGroup" EntityType="Self.UserMedicalGroup" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="SysModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="ComboDetail">
+          <Key>
+            <PropertyRef Name="CBDRowid" />
+          </Key>
+          <Property Name="CBDRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBDCode" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBDDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CBDDisplayFlag" Type="Boolean" />
+          <Property Name="CBDDisplayOrder" Type="Int32" />
+          <Property Name="CBDLastModifiedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CBDModifiedUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ComboHDetail">
+          <Key>
+            <PropertyRef Name="CBDRowid" />
+          </Key>
+          <Property Name="CBDRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBDCode" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBDDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CBDDisplayFlag" Type="Boolean" />
+          <Property Name="CBDDisplayOrder" Type="Int32" />
+          <Property Name="CBDLastModifiedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CBDModifiedUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ComboHMaster">
+          <Key>
+            <PropertyRef Name="CBMRowid" />
+          </Key>
+          <Property Name="CBMRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMHospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMClass" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CBMRemark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CBMGroup" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CBMLastModifiedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CBMModifiedUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="ComboMaster">
+          <Key>
+            <PropertyRef Name="CBMRowid" />
+          </Key>
+          <Property Name="CBMRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMClass" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBMDescription" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CBMRemark" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="CBMGroup" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+          <Property Name="CBMLastModifiedDateTime" Type="DateTime" Precision="3" />
+          <Property Name="CBMModifiedUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SysHCDept">
+          <Key>
+            <PropertyRef Name="SHDRowid" />
+          </Key>
+          <Property Name="SHDRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CBDRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SHDCode" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SHDDisplayOrder" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysHospitalClinic">
+          <Key>
+            <PropertyRef Name="HCRowid" />
+          </Key>
+          <Property Name="HCRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HCClinicDept" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HCDisplaySeq" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SysHospitalClinicDoctor">
+          <Key>
+            <PropertyRef Name="HCDRowid" />
+          </Key>
+          <Property Name="HCDRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HCRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="UserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HCDBelongMedicalGroup" Type="Boolean" Nullable="false" />
+          <Property Name="HCDQuota" Type="Int32" Nullable="false" />
+          <Property Name="HCDQuota2" Type="Int32" Nullable="false" />
+          <Property Name="HCDQuota3" Type="Int32" Nullable="false" />
+          <Property Name="HCDDisplaySeq" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SysHospitalClinicRoom">
+          <Key>
+            <PropertyRef Name="HCRRowid" />
+          </Key>
+          <Property Name="HCRRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HCRClinicRoom" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HCRDisplaySeq" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SysHospitalDept">
+          <Key>
+            <PropertyRef Name="HDRowid" />
+          </Key>
+          <Property Name="HDRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HDClinicDept" Type="String" MaxLength="10" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HDUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HDDisplaySeq" Type="Int32" />
+        </EntityType>
+        <EntityType Name="SysMedicalGroup">
+          <Key>
+            <PropertyRef Name="MGRowid" />
+          </Key>
+          <Property Name="MGRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MGName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MGDescript" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MGFont" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="MGType" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysMedicalGroupHospital">
+          <Key>
+            <PropertyRef Name="MGHRowid" />
+          </Key>
+          <Property Name="MGHRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MGRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="HospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="MGHDisplaySeq" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysOpinionReaction">
+          <Key>
+            <PropertyRef Name="ORRowid" />
+          </Key>
+          <Property Name="ORRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ORUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ORDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ORSubject" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ORContent" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysOpinionReactionEmp">
+          <Key>
+            <PropertyRef Name="ORERowid" />
+          </Key>
+          <Property Name="ORERowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OREHospRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="OREUserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityType Name="SysProgram">
+          <Key>
+            <PropertyRef Name="SPRowid" />
+          </Key>
+          <Property Name="SPRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SPName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SPUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SPFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="SPSysNo" Type="String" MaxLength="2" FixedLength="true" Unicode="false" />
+        </EntityType>
+        <EntityType Name="SysRole">
+          <Key>
+            <PropertyRef Name="SRRowid" />
+          </Key>
+          <Property Name="SRRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SRName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SRDisplayName" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SRDescript" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SRUrl" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="SRFont" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SysRoleProgram">
+          <Key>
+            <PropertyRef Name="SRPRowid" />
+          </Key>
+          <Property Name="SRPRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SRPActive" Type="Boolean" Nullable="false" />
+          <Property Name="SRPDisplaySeq" Type="Int32" Nullable="false" />
+          <Property Name="SRRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SPRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SysUserRole">
+          <Key>
+            <PropertyRef Name="SURRowid" />
+          </Key>
+          <Property Name="SURRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SURDisplaySeq" Type="Int32" Nullable="false" />
+          <Property Name="URRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="SRRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="SysEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="ComboDetail" EntityType="Self.ComboDetail" />
+          <EntitySet Name="ComboHDetail" EntityType="Self.ComboHDetail" />
+          <EntitySet Name="ComboHMaster" EntityType="Self.ComboHMaster" />
+          <EntitySet Name="ComboMaster" EntityType="Self.ComboMaster" />
+          <EntitySet Name="SysHCDept" EntityType="Self.SysHCDept" />
+          <EntitySet Name="SysHospitalClinic" EntityType="Self.SysHospitalClinic" />
+          <EntitySet Name="SysHospitalClinicDoctor" EntityType="Self.SysHospitalClinicDoctor" />
+          <EntitySet Name="SysHospitalClinicRoom" EntityType="Self.SysHospitalClinicRoom" />
+          <EntitySet Name="SysHospitalDept" EntityType="Self.SysHospitalDept" />
+          <EntitySet Name="SysMedicalGroup" EntityType="Self.SysMedicalGroup" />
+          <EntitySet Name="SysMedicalGroupHospital" EntityType="Self.SysMedicalGroupHospital" />
+          <EntitySet Name="SysOpinionReaction" EntityType="Self.SysOpinionReaction" />
+          <EntitySet Name="SysOpinionReactionEmp" EntityType="Self.SysOpinionReactionEmp" />
+          <EntitySet Name="SysProgram" EntityType="Self.SysProgram" />
+          <EntitySet Name="SysRole" EntityType="Self.SysRole" />
+          <EntitySet Name="SysRoleProgram" EntityType="Self.SysRoleProgram" />
+          <EntitySet Name="SysUserRole" EntityType="Self.SysUserRole" />
+          <EntitySet Name="UserData" EntityType="SysModel.UserData" />
+          <EntitySet Name="UserMedicalGroup" EntityType="SysModel.UserMedicalGroup" />
+          <EntitySet Name="SysHospital" EntityType="SysModel.SysHospital" />
+          <EntitySet Name="SysHospitalGrafting" EntityType="SysModel.SysHospitalGrafting" />
+          <EntitySet Name="AspNetUsers" EntityType="SysModel.AspNetUsers" />
+        </EntityContainer>
+        <EntityType Name="UserData">
+          <Key>
+            <PropertyRef Name="UserRowid" />
+          </Key>
+          <Property Name="UserRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserCardNo" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UserCardNoExtend" Type="String" MaxLength="10" FixedLength="true" Unicode="true" />
+          <Property Name="UserNo" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserIdno" Type="String" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="UserBirthday" Type="DateTime" Precision="0" />
+          <Property Name="UserGender" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserBloodType" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserMarriage" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserAreaCode" Type="String" MaxLength="5" FixedLength="false" Unicode="false" />
+          <Property Name="UserAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserMobilePhone" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="UserHomePhone" Type="String" MaxLength="15" FixedLength="true" Unicode="false" />
+          <Property Name="UserDept" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserBelongDept" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserRank" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserJobCategory" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserProIdentity" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserPosition" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserOnBoardDay" Type="DateTime" Precision="0" />
+          <Property Name="UserResignationDay" Type="DateTime" Precision="0" />
+          <Property Name="UserInstitute" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserEducationDept" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UserEducationDegrees" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="UserInsurance" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserBankAccount" Type="String" MaxLength="13" FixedLength="true" Unicode="false" />
+          <Property Name="UserWorkPlace" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserBelongCompany" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserPhoto" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserLicense" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserCertificate" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="UserBusinessDate" Type="DateTime" Precision="0" />
+          <Property Name="UserBusinessEndDate" Type="DateTime" Precision="0" />
+          <Property Name="UserCreate" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserCreateDate" Type="DateTime" Precision="0" />
+          <Property Name="UserUpdate" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserUpdateDate" Type="DateTime" Precision="0" />
+          <Property Name="UserExperience" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserExpertise" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="UserTreatment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="UserMedicalGroup">
+          <Key>
+            <PropertyRef Name="UserMGRowid" />
+          </Key>
+          <Property Name="UserMGRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MGRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserMGCreateDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="UserMGCreateUser" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SysHospital">
+          <Key>
+            <PropertyRef Name="HospRowid" />
+          </Key>
+          <Property Name="HospRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HospID" Type="String" Nullable="false" MaxLength="10" FixedLength="true" Unicode="false" />
+          <Property Name="HospName" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HospPrincipal" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HospDean" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HospAddress" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HospAreaCode" Type="String" MaxLength="3" FixedLength="false" Unicode="true" />
+          <Property Name="HospPhone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="HospFaxno" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="HospEmail" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HospLevel" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="HospHIS" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="HospActive" Type="Boolean" />
+          <Property Name="HospImage" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HospRegSys" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="SysHospitalGrafting">
+          <Key>
+            <PropertyRef Name="HGRowid" />
+          </Key>
+          <Property Name="HGRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HospRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="CBDRowid" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HGMachine" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HGMachinePort" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <Property Name="HGLoginUser1" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HGLoginUser2" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HGLoginUser3" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="HGLoginPassword" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="HGGetDataPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HGSaveLogPath" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+          <Property Name="HGUrl" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="AspNetUsers">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="EmailConfirmed" Type="Boolean" />
+          <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+          <Property Name="LockoutEnabled" Type="Boolean" />
+          <Property Name="AccessFailedCount" Type="Int32" />
+          <Property Name="UserRowid" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="SysModelStoreContainer" CdmEntityContainer="SysEntities">
+          <EntitySetMapping Name="ComboDetail">
+            <EntityTypeMapping TypeName="SysModel.ComboDetail">
+              <MappingFragment StoreEntitySet="ComboDetail">
+                <ScalarProperty Name="CBDRowid" ColumnName="CBDRowid" />
+                <ScalarProperty Name="CBMRowid" ColumnName="CBMRowid" />
+                <ScalarProperty Name="CBDCode" ColumnName="CBDCode" />
+                <ScalarProperty Name="CBDDescription" ColumnName="CBDDescription" />
+                <ScalarProperty Name="CBDDisplayFlag" ColumnName="CBDDisplayFlag" />
+                <ScalarProperty Name="CBDDisplayOrder" ColumnName="CBDDisplayOrder" />
+                <ScalarProperty Name="CBDLastModifiedDateTime" ColumnName="CBDLastModifiedDateTime" />
+                <ScalarProperty Name="CBDModifiedUserRowid" ColumnName="CBDModifiedUserRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComboHDetail">
+            <EntityTypeMapping TypeName="SysModel.ComboHDetail">
+              <MappingFragment StoreEntitySet="ComboHDetail">
+                <ScalarProperty Name="CBDRowid" ColumnName="CBDRowid" />
+                <ScalarProperty Name="CBMRowid" ColumnName="CBMRowid" />
+                <ScalarProperty Name="CBDCode" ColumnName="CBDCode" />
+                <ScalarProperty Name="CBDDescription" ColumnName="CBDDescription" />
+                <ScalarProperty Name="CBDDisplayFlag" ColumnName="CBDDisplayFlag" />
+                <ScalarProperty Name="CBDDisplayOrder" ColumnName="CBDDisplayOrder" />
+                <ScalarProperty Name="CBDLastModifiedDateTime" ColumnName="CBDLastModifiedDateTime" />
+                <ScalarProperty Name="CBDModifiedUserRowid" ColumnName="CBDModifiedUserRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComboHMaster">
+            <EntityTypeMapping TypeName="SysModel.ComboHMaster">
+              <MappingFragment StoreEntitySet="ComboHMaster">
+                <ScalarProperty Name="CBMRowid" ColumnName="CBMRowid" />
+                <ScalarProperty Name="CBMHospRowid" ColumnName="CBMHospRowid" />
+                <ScalarProperty Name="CBMClass" ColumnName="CBMClass" />
+                <ScalarProperty Name="CBMDescription" ColumnName="CBMDescription" />
+                <ScalarProperty Name="CBMRemark" ColumnName="CBMRemark" />
+                <ScalarProperty Name="CBMGroup" ColumnName="CBMGroup" />
+                <ScalarProperty Name="CBMLastModifiedDateTime" ColumnName="CBMLastModifiedDateTime" />
+                <ScalarProperty Name="CBMModifiedUserRowid" ColumnName="CBMModifiedUserRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComboMaster">
+            <EntityTypeMapping TypeName="SysModel.ComboMaster">
+              <MappingFragment StoreEntitySet="ComboMaster">
+                <ScalarProperty Name="CBMRowid" ColumnName="CBMRowid" />
+                <ScalarProperty Name="CBMClass" ColumnName="CBMClass" />
+                <ScalarProperty Name="CBMDescription" ColumnName="CBMDescription" />
+                <ScalarProperty Name="CBMRemark" ColumnName="CBMRemark" />
+                <ScalarProperty Name="CBMGroup" ColumnName="CBMGroup" />
+                <ScalarProperty Name="CBMLastModifiedDateTime" ColumnName="CBMLastModifiedDateTime" />
+                <ScalarProperty Name="CBMModifiedUserRowid" ColumnName="CBMModifiedUserRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHCDept">
+            <EntityTypeMapping TypeName="SysModel.SysHCDept">
+              <MappingFragment StoreEntitySet="SysHCDept">
+                <ScalarProperty Name="SHDRowid" ColumnName="SHDRowid" />
+                <ScalarProperty Name="CBDRowid" ColumnName="CBDRowid" />
+                <ScalarProperty Name="SHDCode" ColumnName="SHDCode" />
+                <ScalarProperty Name="SHDDisplayOrder" ColumnName="SHDDisplayOrder" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHospitalClinic">
+            <EntityTypeMapping TypeName="SysModel.SysHospitalClinic">
+              <MappingFragment StoreEntitySet="SysHospitalClinic">
+                <ScalarProperty Name="HCRowid" ColumnName="HCRowid" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+                <ScalarProperty Name="HCClinicDept" ColumnName="HCClinicDept" />
+                <ScalarProperty Name="HCDisplaySeq" ColumnName="HCDisplaySeq" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHospitalClinicDoctor">
+            <EntityTypeMapping TypeName="SysModel.SysHospitalClinicDoctor">
+              <MappingFragment StoreEntitySet="SysHospitalClinicDoctor">
+                <ScalarProperty Name="HCDRowid" ColumnName="HCDRowid" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+                <ScalarProperty Name="HCRowid" ColumnName="HCRowid" />
+                <ScalarProperty Name="UserRowid" ColumnName="UserRowid" />
+                <ScalarProperty Name="HCDBelongMedicalGroup" ColumnName="HCDBelongMedicalGroup" />
+                <ScalarProperty Name="HCDQuota" ColumnName="HCDQuota" />
+                <ScalarProperty Name="HCDQuota2" ColumnName="HCDQuota2" />
+                <ScalarProperty Name="HCDQuota3" ColumnName="HCDQuota3" />
+                <ScalarProperty Name="HCDDisplaySeq" ColumnName="HCDDisplaySeq" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHospitalClinicRoom">
+            <EntityTypeMapping TypeName="SysModel.SysHospitalClinicRoom">
+              <MappingFragment StoreEntitySet="SysHospitalClinicRoom">
+                <ScalarProperty Name="HCRRowid" ColumnName="HCRRowid" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+                <ScalarProperty Name="HCRClinicRoom" ColumnName="HCRClinicRoom" />
+                <ScalarProperty Name="HCRDisplaySeq" ColumnName="HCRDisplaySeq" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHospitalDept">
+            <EntityTypeMapping TypeName="SysModel.SysHospitalDept">
+              <MappingFragment StoreEntitySet="SysHospitalDept">
+                <ScalarProperty Name="HDRowid" ColumnName="HDRowid" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+                <ScalarProperty Name="HDClinicDept" ColumnName="HDClinicDept" />
+                <ScalarProperty Name="HDUserRowid" ColumnName="HDUserRowid" />
+                <ScalarProperty Name="HDDisplaySeq" ColumnName="HDDisplaySeq" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysMedicalGroup">
+            <EntityTypeMapping TypeName="SysModel.SysMedicalGroup">
+              <MappingFragment StoreEntitySet="SysMedicalGroup">
+                <ScalarProperty Name="MGRowid" ColumnName="MGRowid" />
+                <ScalarProperty Name="MGName" ColumnName="MGName" />
+                <ScalarProperty Name="MGDescript" ColumnName="MGDescript" />
+                <ScalarProperty Name="MGFont" ColumnName="MGFont" />
+                <ScalarProperty Name="MGType" ColumnName="MGType" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysMedicalGroupHospital">
+            <EntityTypeMapping TypeName="SysModel.SysMedicalGroupHospital">
+              <MappingFragment StoreEntitySet="SysMedicalGroupHospital">
+                <ScalarProperty Name="MGHRowid" ColumnName="MGHRowid" />
+                <ScalarProperty Name="MGRowid" ColumnName="MGRowid" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+                <ScalarProperty Name="MGHDisplaySeq" ColumnName="MGHDisplaySeq" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysOpinionReaction">
+            <EntityTypeMapping TypeName="SysModel.SysOpinionReaction">
+              <MappingFragment StoreEntitySet="SysOpinionReaction">
+                <ScalarProperty Name="ORRowid" ColumnName="ORRowid" />
+                <ScalarProperty Name="ORUserRowid" ColumnName="ORUserRowid" />
+                <ScalarProperty Name="ORDate" ColumnName="ORDate" />
+                <ScalarProperty Name="ORSubject" ColumnName="ORSubject" />
+                <ScalarProperty Name="ORContent" ColumnName="ORContent" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysOpinionReactionEmp">
+            <EntityTypeMapping TypeName="SysModel.SysOpinionReactionEmp">
+              <MappingFragment StoreEntitySet="SysOpinionReactionEmp">
+                <ScalarProperty Name="ORERowid" ColumnName="ORERowid" />
+                <ScalarProperty Name="OREHospRowid" ColumnName="OREHospRowid" />
+                <ScalarProperty Name="OREUserRowid" ColumnName="OREUserRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysProgram">
+            <EntityTypeMapping TypeName="SysModel.SysProgram">
+              <MappingFragment StoreEntitySet="SysProgram">
+                <ScalarProperty Name="SPRowid" ColumnName="SPRowid" />
+                <ScalarProperty Name="SPName" ColumnName="SPName" />
+                <ScalarProperty Name="SPUrl" ColumnName="SPUrl" />
+                <ScalarProperty Name="SPFont" ColumnName="SPFont" />
+                <ScalarProperty Name="SPSysNo" ColumnName="SPSysNo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysRole">
+            <EntityTypeMapping TypeName="SysModel.SysRole">
+              <MappingFragment StoreEntitySet="SysRole">
+                <ScalarProperty Name="SRRowid" ColumnName="SRRowid" />
+                <ScalarProperty Name="SRName" ColumnName="SRName" />
+                <ScalarProperty Name="SRDisplayName" ColumnName="SRDisplayName" />
+                <ScalarProperty Name="SRDescript" ColumnName="SRDescript" />
+                <ScalarProperty Name="SRUrl" ColumnName="SRUrl" />
+                <ScalarProperty Name="SRFont" ColumnName="SRFont" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysRoleProgram">
+            <EntityTypeMapping TypeName="SysModel.SysRoleProgram">
+              <MappingFragment StoreEntitySet="SysRoleProgram">
+                <ScalarProperty Name="SRPRowid" ColumnName="SRPRowid" />
+                <ScalarProperty Name="SRPActive" ColumnName="SRPActive" />
+                <ScalarProperty Name="SRPDisplaySeq" ColumnName="SRPDisplaySeq" />
+                <ScalarProperty Name="SRRowid" ColumnName="SRRowid" />
+                <ScalarProperty Name="SPRowid" ColumnName="SPRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysUserRole">
+            <EntityTypeMapping TypeName="SysModel.SysUserRole">
+              <MappingFragment StoreEntitySet="SysUserRole">
+                <ScalarProperty Name="SURRowid" ColumnName="SURRowid" />
+                <ScalarProperty Name="SURDisplaySeq" ColumnName="SURDisplaySeq" />
+                <ScalarProperty Name="URRowid" ColumnName="URRowid" />
+                <ScalarProperty Name="SRRowid" ColumnName="SRRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserData">
+            <EntityTypeMapping TypeName="SysModel.UserData">
+              <MappingFragment StoreEntitySet="UserData">
+                <ScalarProperty Name="UserTreatment" ColumnName="UserTreatment" />
+                <ScalarProperty Name="UserExpertise" ColumnName="UserExpertise" />
+                <ScalarProperty Name="UserExperience" ColumnName="UserExperience" />
+                <ScalarProperty Name="UserUpdateDate" ColumnName="UserUpdateDate" />
+                <ScalarProperty Name="UserUpdate" ColumnName="UserUpdate" />
+                <ScalarProperty Name="UserCreateDate" ColumnName="UserCreateDate" />
+                <ScalarProperty Name="UserCreate" ColumnName="UserCreate" />
+                <ScalarProperty Name="UserBusinessEndDate" ColumnName="UserBusinessEndDate" />
+                <ScalarProperty Name="UserBusinessDate" ColumnName="UserBusinessDate" />
+                <ScalarProperty Name="UserCertificate" ColumnName="UserCertificate" />
+                <ScalarProperty Name="UserLicense" ColumnName="UserLicense" />
+                <ScalarProperty Name="UserPhoto" ColumnName="UserPhoto" />
+                <ScalarProperty Name="UserBelongCompany" ColumnName="UserBelongCompany" />
+                <ScalarProperty Name="UserWorkPlace" ColumnName="UserWorkPlace" />
+                <ScalarProperty Name="UserBankAccount" ColumnName="UserBankAccount" />
+                <ScalarProperty Name="UserInsurance" ColumnName="UserInsurance" />
+                <ScalarProperty Name="UserEducationDegrees" ColumnName="UserEducationDegrees" />
+                <ScalarProperty Name="UserEducationDept" ColumnName="UserEducationDept" />
+                <ScalarProperty Name="UserInstitute" ColumnName="UserInstitute" />
+                <ScalarProperty Name="UserResignationDay" ColumnName="UserResignationDay" />
+                <ScalarProperty Name="UserOnBoardDay" ColumnName="UserOnBoardDay" />
+                <ScalarProperty Name="UserPosition" ColumnName="UserPosition" />
+                <ScalarProperty Name="UserProIdentity" ColumnName="UserProIdentity" />
+                <ScalarProperty Name="UserJobCategory" ColumnName="UserJobCategory" />
+                <ScalarProperty Name="UserRank" ColumnName="UserRank" />
+                <ScalarProperty Name="UserBelongDept" ColumnName="UserBelongDept" />
+                <ScalarProperty Name="UserDept" ColumnName="UserDept" />
+                <ScalarProperty Name="UserHomePhone" ColumnName="UserHomePhone" />
+                <ScalarProperty Name="UserMobilePhone" ColumnName="UserMobilePhone" />
+                <ScalarProperty Name="UserAddress" ColumnName="UserAddress" />
+                <ScalarProperty Name="UserAreaCode" ColumnName="UserAreaCode" />
+                <ScalarProperty Name="UserMarriage" ColumnName="UserMarriage" />
+                <ScalarProperty Name="UserBloodType" ColumnName="UserBloodType" />
+                <ScalarProperty Name="UserGender" ColumnName="UserGender" />
+                <ScalarProperty Name="UserBirthday" ColumnName="UserBirthday" />
+                <ScalarProperty Name="UserIdno" ColumnName="UserIdno" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserNo" ColumnName="UserNo" />
+                <ScalarProperty Name="UserCardNoExtend" ColumnName="UserCardNoExtend" />
+                <ScalarProperty Name="UserCardNo" ColumnName="UserCardNo" />
+                <ScalarProperty Name="UserRowid" ColumnName="UserRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="UserMedicalGroup">
+            <EntityTypeMapping TypeName="SysModel.UserMedicalGroup">
+              <MappingFragment StoreEntitySet="UserMedicalGroup">
+                <ScalarProperty Name="UserMGCreateUser" ColumnName="UserMGCreateUser" />
+                <ScalarProperty Name="UserMGCreateDate" ColumnName="UserMGCreateDate" />
+                <ScalarProperty Name="MGRowid" ColumnName="MGRowid" />
+                <ScalarProperty Name="UserRowid" ColumnName="UserRowid" />
+                <ScalarProperty Name="UserMGRowid" ColumnName="UserMGRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHospital">
+            <EntityTypeMapping TypeName="SysModel.SysHospital">
+              <MappingFragment StoreEntitySet="SysHospital">
+                <ScalarProperty Name="HospRegSys" ColumnName="HospRegSys" />
+                <ScalarProperty Name="HospImage" ColumnName="HospImage" />
+                <ScalarProperty Name="HospActive" ColumnName="HospActive" />
+                <ScalarProperty Name="HospHIS" ColumnName="HospHIS" />
+                <ScalarProperty Name="HospLevel" ColumnName="HospLevel" />
+                <ScalarProperty Name="HospEmail" ColumnName="HospEmail" />
+                <ScalarProperty Name="HospFaxno" ColumnName="HospFaxno" />
+                <ScalarProperty Name="HospPhone" ColumnName="HospPhone" />
+                <ScalarProperty Name="HospAreaCode" ColumnName="HospAreaCode" />
+                <ScalarProperty Name="HospAddress" ColumnName="HospAddress" />
+                <ScalarProperty Name="HospDean" ColumnName="HospDean" />
+                <ScalarProperty Name="HospPrincipal" ColumnName="HospPrincipal" />
+                <ScalarProperty Name="HospName" ColumnName="HospName" />
+                <ScalarProperty Name="HospID" ColumnName="HospID" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="SysHospitalGrafting">
+            <EntityTypeMapping TypeName="SysModel.SysHospitalGrafting">
+              <MappingFragment StoreEntitySet="SysHospitalGrafting">
+                <ScalarProperty Name="HGUrl" ColumnName="HGUrl" />
+                <ScalarProperty Name="HGSaveLogPath" ColumnName="HGSaveLogPath" />
+                <ScalarProperty Name="HGGetDataPath" ColumnName="HGGetDataPath" />
+                <ScalarProperty Name="HGLoginPassword" ColumnName="HGLoginPassword" />
+                <ScalarProperty Name="HGLoginUser3" ColumnName="HGLoginUser3" />
+                <ScalarProperty Name="HGLoginUser2" ColumnName="HGLoginUser2" />
+                <ScalarProperty Name="HGLoginUser1" ColumnName="HGLoginUser1" />
+                <ScalarProperty Name="HGMachinePort" ColumnName="HGMachinePort" />
+                <ScalarProperty Name="HGMachine" ColumnName="HGMachine" />
+                <ScalarProperty Name="CBDRowid" ColumnName="CBDRowid" />
+                <ScalarProperty Name="HospRowid" ColumnName="HospRowid" />
+                <ScalarProperty Name="HGRowid" ColumnName="HGRowid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AspNetUsers">
+            <EntityTypeMapping TypeName="SysModel.AspNetUsers">
+              <MappingFragment StoreEntitySet="AspNetUsers">
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="UserRowid" ColumnName="UserRowid" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="無" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

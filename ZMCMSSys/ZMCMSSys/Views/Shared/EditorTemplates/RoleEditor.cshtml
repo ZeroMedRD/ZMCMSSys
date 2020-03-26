@@ -1,0 +1,13 @@
+﻿@using System.Collections
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownListFor(m => m)
+        .Name("SRRowid")
+        .DataValueField("SRRowid")
+        .DataTextField("SRName")
+        .SelectedIndex(0)
+        .DataSource(ds => ds
+            .Read(read => read.Action("GetRole", "ZMSystem"))
+        )
+        .Filter("contains")
+ )

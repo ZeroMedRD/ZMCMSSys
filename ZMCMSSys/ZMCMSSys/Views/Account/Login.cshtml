@@ -1,0 +1,144 @@
+﻿@using ZMCMS.Models
+@model LoginViewModel
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    @*<title>AdminLTE 2 | Log in</title>*@
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">    
+</head>
+
+<body class="hold-transition login-page">    
+    <div class="login-box">
+        <div class="box box-success">
+            <div class="box-header with-border head-title">
+                <div class="login-logo">
+                    <a href="@Url.Action("Index","Home")">
+                        @*<img src="~/Assets/Images/Logo/ZeroMedLogo-50.png" />*@
+                        <b>資訊系統平台</b><h4>同心醫療體系 資訊組開發</h4>
+                    </a>
+                </div>
+            </div>
+
+            <!-- /.login-logo -->
+            <div class="box-body">
+                @*<div class="login-box-body">*@
+                <p class="login-box-msg">請輸入您的帳號及密碼，驗證正確後即可進入個人資訊系統作業環境．</p>
+                @*<form action="../../index2.html" method="post">*@
+                <section id="loginForm">
+                    @*@using (Html.BeginForm("LoginPrivate", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))*@
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <div class="form-group has-feedback">
+                            @Html.TextBoxFor(m => m.Email, new { placeholder = "使用者帳號", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })                            
+                        </div>
+                        <div class="form-group has-feedback">
+                            @Html.PasswordFor(m => m.Password, new { placeholder = "密碼", @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })                            
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <div style="padding-left:1px;">
+                                    @Html.CheckBoxFor(m => m.RememberMe)
+                                    @Html.LabelFor(m => m.RememberMe)
+                                    <a href="#">忘記密碼 ?</a><br>
+                                </div>
+                            </div>                            
+                            <div class="col-xs-4">
+                                <input type="submit" value="登入" class="btn btn-primary btn-block btn-flat" />                                
+                            </div>                            
+                        </div>
+                        @*</form>*@
+                        @*<div class="social-auth-links text-center">
+                        <p>- OR -</p>
+                        <a href="#" class="btn btn-block btn-social btn-facebook btn-flat">
+                            <i class="fa fa-facebook"></i> Sign in using
+                            Facebook
+                        </a>
+                        <a href="#" class="btn btn-block btn-social btn-google btn-flat">
+                            <i class="fa fa-google-plus"></i> Sign in using
+                            Google+
+                        </a>
+                    </div>*@
+                        <!-- /.social-auth-links -->
+
+                        @*<a href="register.html" class="text-center">Register a new membership</a>*@
+                    }
+                </section>
+            </div>
+            <!-- /.login-box-body -->
+        </div>
+    </div>
+</body>
+</html>
+
+@*<div class="inner-bg">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-6 col-sm-offset-3">
+                    <section id="loginForm">
+                        @using (Html.BeginForm("LoginPrivate", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            <div class="panel panel-primary">
+                                <div class="form-top">
+                                    <div class="form-top-left">
+                                        <h3>登入至資訊系統</h3>
+                                        <p>請輸入您的帳號及密碼，驗證正確後即可進入個人資訊系統作業環境．</p>
+                                    </div>
+                                    <div class="form-top-right">
+                                        <i class="fa fa-key"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-primary">
+                                <div class="form-bottom">
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                                        <div class="col-md-10">
+                                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                                        <div class="col-md-10">
+                                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <div class="checkbox">
+                                                @Html.CheckBoxFor(m => m.RememberMe)
+                                                @Html.LabelFor(m => m.RememberMe)
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="col-md-offset-2 col-md-10">
+                                            <input type="submit" value="登入" class="btn btn-default" />
+                                        </div>
+                                    </div>
+                                    <p>
+                                        @Html.ActionLink("註冊為新使用者", "Register")
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </section>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

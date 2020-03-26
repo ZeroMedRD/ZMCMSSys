@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "醫事機構科系所屬科別維護";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    <h2>醫事機構科系所屬科別資料維護</h2>
+    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SHCDCombo>()
+                .Name("grid_Combo")
+                .Columns(columns =>
+                {
+                    columns.Bound(c => c.CBDRowid).Hidden(true);
+                    columns.Bound(c => c.CBDCode).Hidden(true);
+                    columns.Bound(c => c.CBDDescription);
+                    columns.Bound(c => c.CBDDisplayOrder).Hidden(true).Sortable(true);
+                })
+                .ToolBar(toolbar =>
+                {
+        //toolbar.Create().Text("新增資料");
+        toolbar.Excel().Text("輸出到 Excel");
+                })
+                .ColumnMenu()
+                .Pageable(page => page.ButtonCount(10).PageSizes(new[] { 10, 20, 30, 50 }).Messages(message => message.ItemsPerPage("每頁顯示數目")))
+                .Navigatable()
+                .Filterable()
+                .Scrollable(scrollable => scrollable.Enabled(true).Height("450"))
+                .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Sort(sort => sort.Add("CBDDisplayOrder").Ascending())
+                    .Model(model => model.Id(p => p.CBDRowid))
+                    .Read(read => read.Action("SHCDCombo_Read", "SysHospital"))
+                    .PageSize(30))
+                    .Reorderable(reorderable => reorderable.Columns(true))
+                .Events(events => events.DataBound("dataBound"))
+                .ClientDetailTemplateId("SysHCDeptTemplate")
+    )
+
+    <script id="SysHCDeptTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_SysHCDept>()
+                            //.Name("MedicalGroupHospitalTemplate_#=MGRowid#") // template expression, to be evaluated in the master context
+                            .Name("#=CBDRowid#")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(o => o.CBDDescription).EditorTemplateName("HospitalClinicDeptEditor").Title("所屬科別");
+                        //columns.Bound(o => o.HDUserName).EditorTemplateName("HospitalUserEditor").Title("單位主管");
+                        columns.Bound(o => o.SHDDisplayOrder).Title("顯示順序").Width(150);
+                                columns.Command(command =>
+                                {
+                                    command.Edit().Text("修改");
+                                    command.Destroy().Text("刪除");
+                                }).Width(180);
+                            })
+                            .ToolBar(tools => tools.Create().Text("加入科別"))
+                            .Editable(editable => editable.Mode(GridEditMode.InLine))
+                            .Pageable(page => page.Refresh(true))
+                            .DataSource(dataSource => dataSource.Ajax()
+                                .Sort(sort => sort.Add("SHDDisplayOrder").Ascending())
+                                .Model(model =>
+                                {
+                                    model.Id(o => o.SHDRowid);
+                                })
+                                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                                .Read(read => read.Action("SHCDept_Read", "SysHospital", new { sCBDRowid = "#=CBDRowid#" }))
+                                .Update(update => update.Action("SHCDept_Update", "SysHospital"))
+                                .Create(create => create.Action("SHCDept_Create", "SysHospital", new { sCBDRowid = "#=CBDRowid#" }))
+                                .Destroy(destroy => destroy.Action("SHCDept_Destroy", "SysHospital")))
+                            .Pageable()
+                            .Sortable()
+                            .ToClientTemplate()
+        )
+    </script>
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <script>
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+</body>
+</html>

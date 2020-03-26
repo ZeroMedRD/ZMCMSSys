@@ -1,0 +1,106 @@
+﻿@{
+    ViewBag.Title = "醫療群組資料維護";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Content/cshtmljs")
+    @Scripts.Render("~/Content/cshtmlcss")
+</head>
+<body>
+    <h2>醫療群組資料維護</h2>
+    @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_MedicalGroups>()
+                .Name("grid_SysMedicalGroup")
+                                .Columns(columns =>
+                                {
+                                    columns.Bound(c => c.MGName);
+                                    columns.Bound(c => c.MGDescript);
+                                    columns.Bound(c => c.MGFont);
+                                    columns.Command(command =>
+                                    {
+                                        command.Edit().Text("修改");
+                                        command.Destroy().Text("刪除");
+                                    }).Width(180);
+                                })
+                                .ToolBar(toolbar =>
+                                {
+                                    toolbar.Create().Text("新增資料");
+                                    toolbar.Excel().Text("輸出到 Excel");
+                                })
+                                .Pageable().Sortable().Filterable()
+                                .DataSource(dataSource => dataSource
+                                    .Ajax()
+                                    .Model(model => model.Id(p => p.MGRowid))
+                                    .Read(read => read.Action("SysMedicalGroup_Read", "SysMedicalGroup", new { MGType = Request.QueryString["MGType"] }))
+                                    .Create(create => create.Action("SysMedicalGroup_Create", "SysMedicalGroup", new { MGType = Request.QueryString["MGType"] }))
+                                    .Update(update => update.Action("SysMedicalGroup_Update", "SysMedicalGroup"))
+                                    .Destroy(destroy => destroy.Action("SysMedicalGroup_Destroy", "SysMedicalGroup"))
+                                )
+                                .Events(events => events.DataBound("dataBound"))
+                                .ClientDetailTemplateId("MedicalGroupHospitalTemplate")
+    )
+
+    <script id="MedicalGroupHospitalTemplate" type="text/kendo-tmpl">
+        @(Html.Kendo().Grid<ZMCMSSys.ViewModels.ViewModel_MedicalGroupHospitals>()
+                            //.Name("MedicalGroupHospitalTemplate_#=MGRowid#") // template expression, to be evaluated in the master context
+                            .Name("#=MGRowid#")
+                            .Columns(columns =>
+                            {
+                                columns.Bound(o => o.HospName).EditorTemplateName("HospitalEditor").Title("醫事機構名稱");
+                                columns.Bound(o => o.MGHDisplaySeq).Title("選單顯示順序").Width(50);
+                                columns.Command(command =>
+                                {
+                                    command.Edit().Text("修改");
+                                    command.Destroy().Text("刪除");
+                                }).Width(180);
+                            })
+                            .ToolBar(tools => tools.Create().Text("加入醫事機構至醫療群組"))
+                            .Editable(editable => editable.Mode(GridEditMode.InLine))
+                            .Pageable(page => page.Refresh(true))
+                            .DataSource(dataSource => dataSource.Ajax()
+                                .Sort(sort => sort.Add("MGHDisplaySeq").Ascending())
+                                .Model(model =>
+                                {
+                                    model.Id(o => o.MGHRowid);
+                                })
+                                .Events(events => events.Error("error_handler").Sync("sync_handler"))
+                                .Read(read => read.Action("SysMedicalGroupHospital_Read", "SysMedicalGroup", new { MGRowid = "#=MGRowid#" }))
+                                .Update(update => update.Action("SysMedicalGroupHospital_Update", "SysMedicalGroup", new { MGRowid = "#=MGRowid#" }))
+                                .Create(create => create.Action("SysMedicalGroupHospital_Create", "SysMedicalGroup", new { MGRowid = "#=MGRowid#" }))
+                                .Destroy(destroy => destroy.Action("SysMedicalGroupHospital_Destroy", "SysMedicalGroup"))
+                            .PageSize(10))                            
+                            .Sortable()
+                            .ToClientTemplate()
+        )
+    </script>
+
+    <script type="text/javascript">
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+
+    <script>
+        function dataBound() {
+            this.expandRow(this.tbody.find("tr.k-master-row").first());
+        }
+    </script>
+</body>
+</html>

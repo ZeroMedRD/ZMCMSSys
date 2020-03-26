@@ -1,0 +1,33 @@
+﻿@model ZMCMSSys.ViewModels.ViewModel_Hospitals
+
+<link href="~/Content/Editor.css" rel="stylesheet" />
+
+<script>
+    function onSuccess(e) {
+        this.read();
+    }
+</script>
+
+<div class="form-group-sm form-group-padding">
+    <div class="row row-padding">
+        <div class="col-md-12 no-padding">
+            <div class="form-group-padding">
+                <img id="ImageUrl" src=@Url.Content("~/PhotoCloud/HospitalImages/${HospImage}") alt="${HospID}" height="150" />
+            </div>
+            <div class="inputOneHead HeadOneWidth">
+                <i class="fas fa-image"> 上傳圖片</i>
+            </div>
+            <div class="inputOneBody BodyOneWidth">
+                @(Html.Kendo().Upload().Name("files")
+                    .Async(a => a
+                        .Save("Async_SaveHospital", "SysHospital", new { id = "${HospRowid}" })
+                        .Remove("Async_RemoveHospital", "SysHospital")
+                        .AutoUpload(false))
+                        .Multiple(false)
+                        .HtmlAttributes(new { accept = ".png,.jpg,.gif", @class = "InputOneBox" })
+                        //.Events(events => events.Success("onSuccess"))
+                )
+            </div>
+        </div>
+    </div>
+</div>

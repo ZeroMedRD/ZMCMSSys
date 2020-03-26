@@ -1,0 +1,81 @@
+﻿@model ZMCMSSys.ViewModels.ViewModel_Hospitals
+
+<!DOCTYPE html>
+<html>
+<head>    
+    <script>
+        function HospPrincipalDefault(e) {
+            var dropdownlist = $("#HospPrincipal").data("kendoDropDownList");
+            dropdownlist.select(0);
+            this.trigger('change');
+        }
+
+        function HospDeanDefault(e) {
+            var dropdownlist = $("#HospDean").data("kendoDropDownList");
+            dropdownlist.select(0);
+            this.trigger('change');
+        }
+
+        function HospLevelDefault(e) {
+            var dropdownlist = $("#HospLevel").data("kendoDropDownList");
+            dropdownlist.select(0);
+            this.trigger('change');
+        }
+
+        function error_handler(e) {
+            if (e.errors) {
+                var message = "Errors:\n";
+                $.each(e.errors, function (key, value) {
+                    if ('errors' in value) {
+                        $.each(value.errors, function () {
+                            message += this + "\n";
+                        });
+                    }
+                });
+                alert(message);
+            }
+        }
+
+        function sync_handler(e) {
+            this.read();
+        }
+    </script>
+</head>
+<body>
+    @Html.HiddenFor(model => model.HospRowid)
+    @Html.HiddenFor(model => model.HospImage)
+
+    @*<div>
+        <div class="row row-padding">
+            <div class="form-group-sm">
+                <div class="col-md-12">
+                    <img id="ImageUrl" src=@Url.Content("~/PhotoCloud/HospitalImages/${HospImage}") alt="${HospID}" height="100" />
+                </div>
+            </div>            
+        </div>
+    </div>*@
+
+    @*Tabs 列*@
+    <div class="nav-tabs-custom">
+        <ul class="nav nav-tabs">
+            <li class="active" style="font-size:large;"><a href="#basedata" data-toggle="tab">基本資料</a></li>
+            <li style="font-size:large;"><a href="#uploadphoto" data-toggle="tab">圖片管理</a></li>
+            @*<li><a href="#linkdata" data-toggle="tab">連結設定</a></li>*@
+        </ul>
+
+        <div class="tab-content">
+            <div class="active tab-pane no-padding" id="basedata">
+                @Html.Partial("_SysHospitalBase")
+            </div>
+
+            <div class="tab-pane" id="uploadphoto">
+                @Html.Partial("_SysHospitalPhoto")
+            </div>
+
+            @*<div class="tab-pane" id="linkdata">
+                @Html.Partial("_SysHospitalGrafting")
+            </div>*@
+        </div>
+    </div>
+</body>
+</html >

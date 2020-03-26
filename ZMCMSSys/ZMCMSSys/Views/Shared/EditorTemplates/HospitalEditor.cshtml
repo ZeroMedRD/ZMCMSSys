@@ -1,0 +1,13 @@
+﻿@using System.Collections
+@using Kendo.Mvc.UI
+
+@(Html.Kendo().DropDownListFor(m => m)
+        .Name("HospRowid")
+        .DataValueField("HospRowid")
+        .DataTextField("HospName")
+        .SelectedIndex(0)
+        .DataSource(ds => ds
+            .Read(read => read.Action("GetHospital", "SysMedicalGroup"))
+        )
+        .Filter("contains")
+ )
